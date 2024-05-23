@@ -48,5 +48,6 @@ export default function Ticket() {
                 <div className="mx-[20px]">내용</div>
             </div>
         </div>
+        // test
     );
 }
