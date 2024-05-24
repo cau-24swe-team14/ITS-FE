@@ -30,6 +30,46 @@ const instance = axios.create({
 });
 
 
+export const getIssueDetail = async () => {
+  try{
+    const response = await axios.get("/IssueDetailExample.json");
+    const data = response.data;
+    const issue = {
+      id: data.id,
+      title: data.title,
+      description: data.description,
+      reporter: data.reporter,
+      assignee: data.assignee,
+      priority: data.priority,
+      keyword: data.keyword,
+      status: data.status,
+      comment: data.comment, 
+    };
+    return issue;
+
+  } catch (error) {
+    console.error('Failed to fetch issue:', error);
+    throw error;
+  }
+};
+
+
+export async function fetchIssue(projectId: number, issueId: number, sessionId: string) {
+  try {
+      const response = await axios.get(`/projects/${projectId}/issues/${issueId}`, {
+          headers: {
+              'Content-Type': 'application/json',
+              'Cookie': `JSESSIONID=${sessionId}`
+          }
+      });
+      return response.data;
+  } catch (error) {
+      console.error('Failed to fetch issue:', error);
+      throw error;
+  }
+}
+
+
 // /**
 //  * @param data login interface
 //  * @returns 로그인 요청 API 함수 (POST)
