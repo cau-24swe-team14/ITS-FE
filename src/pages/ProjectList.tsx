@@ -8,8 +8,10 @@ import { useNavigate } from "react-router-dom";
 interface Project {
   id: number;
   title: string;
-  status: string;
+  status: number;
 }
+
+const ProjectStatus = ['Not Started', 'In Progress', 'Done']
 
 const ProjectList: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -22,31 +24,23 @@ const ProjectList: React.FC = () => {
 
     //프로젝트가 어떻게 나오는지 예시
     const [projects, setProjects] = useState<Project[]>([
-        { id: 1, title: 'Project Alpha', status: 'Not Started' },
-        { id: 2, title: 'Project Beta', status: 'In Progress' },
-        { id: 3, title: 'Project Gamma', status: 'Completed' },
-        { id: 4, title: 'Project Gamma', status: 'Completed' },
-        { id: 5, title: 'Project Gamma', status: 'Completed' },
-        { id: 6, title: 'Project Gamma', status: 'Completed' },
-        { id: 7, title: 'Project Gamma', status: 'Completed' },
+        { id: 1, title: 'Project Alpha', status: 0 },
+        { id: 2, title: 'Project Beta', status: 1 },
+        { id: 3, title: 'Project Gamma', status: 1 },
+        { id: 4, title: 'Project Gamma', status: 1 },
+        { id: 5, title: 'Project Gamma', status: 2 },
+        { id: 6, title: 'Project Gamma', status: 2 },
+        { id: 7, title: 'Project Gamma', status: 0 },
     ]);
 
     const [projectView, setProjectView] = useState(projects.slice(listNum*(currentPage-1), listNum*(currentPage)));
+    const [filterView, setfilterView] = useState(projects);
 
+    //누르면 프로젝트 추가 되도록(페이지 네비게이션)
+    const createProject = () => {};
 
-    //누르면 프로젝트 추가 되도록(확인용)
-    const createProject = () => {
-        const newProject: Project = { id: projects.length + 1, title: `Project ${projects.length + 1}`, status: 'Not Started' };
-        setProjects([...projects, newProject]);
-    };
-
-    //edit 버튼 누르면 edit 택스트 추가되도록(확인용)
-    const editProject = (id: number) => {
-        const updatedProjects = projects.map(project =>
-        project.id === id ? { ...project, title: `${project.title} (edited)` } : project
-        );
-        setProjects(updatedProjects);
-    };
+    //edit 버튼 누르면 edit 택스트 추가되도록(페이지 네비게이션)
+    const editProject = () => {};
 
     //검색 버튼을 눌렀을떄 수행
     const handleSearch = () => {
@@ -63,7 +57,21 @@ const ProjectList: React.FC = () => {
     const listSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setlistNum(Number(e.target.value));
         handlePageChange(1);
-        setProjectView(projects.slice(Number(e.target.value)*0, Number(e.target.value)*1))
+        setProjectView(filterView.slice(Number(e.target.value)*0, Number(e.target.value)*1))
+    };
+
+    //필터 적용
+    const filtering_status = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        handlePageChange(1);
+        const status = Number(e.target.value)
+        if(status>-1){
+            const filter_result = projects.filter(project => project.status == status)
+            setProjectView(filter_result.slice(listNum*0, listNum*1))
+            setfilterView(filter_result)
+        }else{
+            setfilterView(projects)
+            setProjectView(projects.slice(listNum*0, listNum*1))
+        }
     };
 
     return (
@@ -71,18 +79,25 @@ const ProjectList: React.FC = () => {
             <div>
                 <h2 className='main-title'>Project</h2>
                 <div className='search-bar'>
-                    <div className='search'>    
-                        <input
-                            type="text"
-                            placeholder="search"
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                        />
-                        <button className="search-button" onClick={handleSearch}>
-                            <img src = {serchIcon} alt = "" className='search-icon'/> 
-                        </button>
+                <div className='search-filter'>
+                        <div className='search'>    
+                            <input
+                                type="text"
+                                placeholder="search"
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                            />
+                            <button className="search-button" onClick={handleSearch}>
+                                <img src = {serchIcon} alt = "" className='search-icon'/> 
+                            </button>
+                        </div>
+                        <select className="list-veiw" onChange={filtering_status}>
+                            <option value="-1">any</option>
+                            <option value="0">not Started</option>
+                            <option value="1">in Progress</option>
+                            <option value="2">Done</option>
+                        </select>
                     </div>
-                
                     <select className="list-veiw" onChange={listSelect}>
                         <option value="5">5개씩 보기</option>
                         <option value="10">10개씩 보기</option>
@@ -106,9 +121,9 @@ const ProjectList: React.FC = () => {
                     <tr key={project.id}>
                     <td><text onClick={()=>nav(`/issuelist/`+project.id)}>{project.title}</text></td>
                     <td className = "status-container">
-                        <text onClick={()=>nav(`/issuelist/`+project.id)}>{project.status}</text>
+                        <text onClick={()=>nav(`/issuelist/`+project.id)}>{ProjectStatus[project.status]}</text>
                         {isAdmin && (
-                            <button className="edit-botton" onClick={() => editProject(project.id)}>
+                            <button className="edit-botton" onClick={editProject}>
                                 <img src={editIcon} alt="edit"/>
                             </button>
                         )}  
@@ -119,10 +134,10 @@ const ProjectList: React.FC = () => {
                 </tbody>
                 </table>
                 <div className="pagination">
-                    {currentPage>1?<span onClick={() => {handlePageChange(currentPage - 1); setProjectView(projects.slice(listNum*(currentPage-2), listNum*(currentPage-1)))}}>
+                    {currentPage>1?<span onClick={() => {handlePageChange(currentPage - 1); setProjectView(filterView.slice(listNum*(currentPage-2), listNum*(currentPage-1)))}}>
                         &lt;</span>:<span>&lt;</span>}
                     {currentPage}
-                    {currentPage<Math.ceil(projects.length/listNum)?<span onClick={() => {handlePageChange(currentPage + 1); setProjectView(projects.slice(listNum*(currentPage), listNum*(currentPage+1)))}}>
+                    {currentPage<Math.ceil(filterView.length/listNum)?<span onClick={() => {handlePageChange(currentPage + 1); setProjectView(filterView.slice(listNum*(currentPage), listNum*(currentPage+1)))}}>
                         &gt;</span>:<span>&gt;</span>}
                 </div>
             </div>

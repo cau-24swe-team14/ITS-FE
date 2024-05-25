@@ -7,10 +7,14 @@ import { useNavigate, useParams } from "react-router-dom";
 interface Issue {
   id: number;
   title: string;
-  status: string;
+  status: number;
   startDate : string;
   dueDate : string;
 }
+
+const IssueStatue = ['NEW', 'ASSIGNED', 'FIXED', 'RESOLVED', 'CLOSED', 'REOPENED']
+const IssuePriority = ['BLOCKED', 'CRITICAL', 'MAJOR', 'MINOR', 'TRIVIAL']
+const IssueKeyword = ['bug', 'feature', 'performance', 'security', 'ui', 'db', 'integration', 'network', 'api', 'docs']
 
 const IssueList: React.FC = () => {
     //프로젝트 리스트에서 클릭한 것을 project 아이디를 토대로 가져온다
@@ -22,18 +26,18 @@ const IssueList: React.FC = () => {
     const [viewProjectInfo, onviewProjectInfo] = useState(false);
     const nav = useNavigate();
     
-    //어드민 계정 활성화/비활성화
-    const isTester = false
+    //테스터 계정 활성화/비활성화
+    const isTester = true
 
     //프로젝트가 어떻게 나오는지 예시
     const [issues, setIssues] = useState<Issue[]>([
-        { id: 1, title: 'Project Alpha', status: 'fixed', startDate: '2021-05-30', dueDate:'2022-03-12' },
-        { id: 2, title: 'Project Beta', status: 'new' , startDate: '2021-05-30', dueDate:'2022-03-12' },
-        { id: 3, title: 'Project Gamma', status: 'assigned' , startDate: '2021-05-30', dueDate:'2022-03-12' },
-        { id: 4, title: 'Project Gamma', status: 'assigned' , startDate: '2021-05-30', dueDate:'2022-03-12' },
-        { id: 5, title: 'Project Gamma', status: 'assigned' , startDate: '2021-05-30', dueDate:'2022-03-12' },
-        { id: 6, title: 'Project Gamma', status: 'fixed' , startDate: '2021-05-30', dueDate:'2022-03-12' },
-        { id: 7, title: 'Project Gamma', status: 'fixed' , startDate: '2021-05-30', dueDate:'2022-03-12' },
+        { id: 1, title: 'Project Alpha', status: 2, startDate: '2021-05-30', dueDate:'2022-03-12' },
+        { id: 2, title: 'Project Beta', status: 0 , startDate: '2021-05-30', dueDate:'2022-03-12' },
+        { id: 3, title: 'Project Gamma', status: 1 , startDate: '2021-05-30', dueDate:'2022-03-12' },
+        { id: 4, title: 'Project Gamma', status: 2 , startDate: '2021-05-30', dueDate:'2022-03-12' },
+        { id: 5, title: 'Project Gamma', status: 1 , startDate: '2021-05-30', dueDate:'2022-03-12' },
+        { id: 6, title: 'Project Gamma', status: 3 , startDate: '2021-05-30', dueDate:'2022-03-12' },
+        { id: 7, title: 'Project Gamma', status: 4 , startDate: '2021-05-30', dueDate:'2022-03-12' },
     ]);
 
     const [issueView, setIssueView] = useState(issues.slice(listNum*(currentPage-1), listNum*(currentPage)));
@@ -62,10 +66,11 @@ const IssueList: React.FC = () => {
     };
 
     //필터 적용
-    const filtering = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const filtering_status = (e: React.ChangeEvent<HTMLSelectElement>) => {
         handlePageChange(1);
-        if(e.target.value!=='any'){
-            const filter_result = issues.filter(issue => issue.status === e.target.value)
+        const status = Number(e.target.value)
+        if(status>-1){
+            const filter_result = issues.filter(issue => issue.status == status)
             setIssueView(filter_result.slice(listNum*0, listNum*1))
             setfilterView(filter_result)
         }else{
@@ -115,14 +120,14 @@ const IssueList: React.FC = () => {
                                 <img src = {serchIcon} alt = "" className='search-icon'/> 
                             </button>
                         </div>
-                        <select className="list-veiw" onChange={filtering}>
-                            <option value="any">any</option>
-                            <option value="new">new</option>
-                            <option value="assigned">assigned</option>
-                            <option value="fixed">fixed</option>
-                            <option value="resolved">resolved</option>
-                            <option value="closed">closed</option>
-                            <option value="reopened">reopened</option>
+                        <select className="list-veiw" onChange={filtering_status}>
+                            <option value="-1">any</option>
+                            <option value="0">new</option>
+                            <option value="1">assigned</option>
+                            <option value="2">fixed</option>
+                            <option value="3">resolved</option>
+                            <option value="4">closed</option>
+                            <option value="5">reopened</option>
                         </select>
                     </div>
                     <select className="list-veiw" onChange={listSelect}>
@@ -150,7 +155,7 @@ const IssueList: React.FC = () => {
                 {issueView.map(issue => (
                     <tr key={issue.id} onClick={()=>nav(`/issueDetail/`+issue.id)}>
                     <td>{issue.title}</td>
-                    <td>{issue.status}</td>
+                    <td>{IssueStatue[issue.status]}</td>
                     <td>{issue.startDate}</td>
                     <td>{issue.dueDate}</td>
                     </tr>
