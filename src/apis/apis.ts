@@ -70,6 +70,17 @@ export async function fetchIssue(projectId: number, issueId: number, sessionId: 
 }
 
 
+export const postIssue = async (issueData : any) => {
+  try {
+    const postResponse = await axios.post("/IssueCreateExample.json", issueData);
+    return postResponse;
+  } catch (error) {
+    console.error('Error posting issue:', error);
+    throw error;
+  }
+};
+
+
 // /**
 //  * @param data login interface
 //  * @returns 로그인 요청 API 함수 (POST)

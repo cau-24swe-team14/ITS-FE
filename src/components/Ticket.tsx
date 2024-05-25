@@ -18,6 +18,7 @@ const Ticket: React.FC<ITicketProps> = ({ title, description, reporter, assignee
         <div className="flex flex-col mx-[171px] my-[80px] w-[1098px] h-[422px] bg-[#D9D9D9] rounded-[5px]">
             <div className="flex flex-row justify-between">
                 <div className="ml-[21px] mt-[20px] text-[36px] font-semibold">#1</div>
+                <button onClick={() => navigate('/issuecreate')}></button>
                 <img src={editImage} alt="수정" className="mt-[33px] mr-[28px] w-[20px] h-[20px]" onClick={() => navigate('/issueedit')} />
             </div>
             <div className="mx-[31px]">
