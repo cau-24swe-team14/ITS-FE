@@ -13,8 +13,6 @@ interface Issue {
 }
 
 const IssueStatue = ['NEW', 'ASSIGNED', 'FIXED', 'RESOLVED', 'CLOSED', 'REOPENED']
-const IssuePriority = ['BLOCKED', 'CRITICAL', 'MAJOR', 'MINOR', 'TRIVIAL']
-const IssueKeyword = ['bug', 'feature', 'performance', 'security', 'ui', 'db', 'integration', 'network', 'api', 'docs']
 
 const IssueList: React.FC = () => {
     //프로젝트 리스트에서 클릭한 것을 project 아이디를 토대로 가져온다
