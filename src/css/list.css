@@ -37,7 +37,7 @@ th {
     height: 50px;
 }
 
-.status{
+.create{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -116,4 +116,19 @@ th {
     width : 100px;
     height: 32px;
     font-size: 12px;
+}
+
+.sub-title{
+    margin-left: 5px;
+    padding: 15px;
+    font-size: 30px;
+    color: gray;
+    font-weight: lighter;   
+}
+
+.project-info{
+    font-size: 15px;
+    color: gray;
+    font-weight: lighter;
+    width: 300px;   
 }

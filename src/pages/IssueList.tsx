@@ -13,15 +13,17 @@ interface Issue {
 }
 
 const IssueList: React.FC = () => {
+    //프로젝트 리스트에서 클릭한 것을 project 아이디를 토대로 가져온다
     const {projectid} = useParams<{projectid : string}>();
 
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, handlePageChange] = useState(1);
     const [listNum, setlistNum] = useState(5);
+    const [viewProjectInfo, onviewProjectInfo] = useState(false);
     const nav = useNavigate();
     
     //어드민 계정 활성화/비활성화
-    const isTester = true
+    const isTester = false
 
     //프로젝트가 어떻게 나오는지 예시
     const [issues, setIssues] = useState<Issue[]>([
@@ -75,7 +77,31 @@ const IssueList: React.FC = () => {
     return (
         <Container>
             <div>
-                <h2 className='main-title'>Issue</h2>
+                <h2 className='main-title'>
+                    Issue 
+                        <label className='sub-title' onClick={()=>onviewProjectInfo(!viewProjectInfo)}>
+                            / {projectid}
+                        </label>
+                        {viewProjectInfo && (
+                            <div className = 'project-info' style={{ 
+                                border: '1px solid #ccc', 
+                                padding: '10px', 
+                                borderRadius: '5px', 
+                                marginTop: '10px', 
+                                backgroundColor: 'white', 
+                                position: 'absolute', 
+                                top: '180px', 
+                                left: '250px',
+                                zIndex: 10
+                              }}>
+                                <p><strong>Member:</strong></p>
+                                <p>PL - PL1, PL2</p>
+                                <p>Dev - Dev1, Dev2, Dev3, Dev4, Dev5, ..</p>
+                                <p>Tester - Tester1, Tester2, Tester3, Tester4, 많으면 줄바꿈돼서 내려감</p>
+                                <p><strong>Description:</strong> 최대 20자 정도</p>
+                          </div>
+                        )}
+                </h2>
                 <div className='search-bar'>
                     <div className='search-filter'>
                         <div className='search'>    
@@ -102,7 +128,7 @@ const IssueList: React.FC = () => {
                     <select className="list-veiw" onChange={listSelect}>
                         <option value="5">5개씩 보기</option>
                         <option value="10">10개씩 보기</option>
-                        <option value="50">50개씩 보기</option>
+                        <option value="25">25개씩 보기</option>
                     </select>
                 </div>
                 
@@ -110,9 +136,9 @@ const IssueList: React.FC = () => {
                 <thead>
                 <tr>
                     <th className = 'title'>Title</th>
-                    <th style={{width: '10%'}}>Status</th>
-                    <th className = 'dateStart' style={{width: '20%'}}>Start date</th>
-                    <th className = 'dateDue'>
+                    <th style={{width: '15%'}}>Status</th>
+                    <th className = 'dateStart' style={isTester?{width: '20%'}:{width: '27%'}}>Start date</th>
+                    <th className = 'create'>
                         Due date
                         {isTester && (
                             <button onClick={createIssue}>+ Create Issue</button>

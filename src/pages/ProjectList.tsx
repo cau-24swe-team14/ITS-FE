@@ -86,14 +86,14 @@ const ProjectList: React.FC = () => {
                     <select className="list-veiw" onChange={listSelect}>
                         <option value="5">5개씩 보기</option>
                         <option value="10">10개씩 보기</option>
-                        <option value="50">50개씩 보기</option>
+                        <option value="25">25개씩 보기</option>
                     </select>
                 </div>
                 <table style={{ height: `${50 * (listNum+1)}px` }}>
                 <thead>
                 <tr>
                     <th className = 'title'>Title</th>
-                    <th className = 'status'>
+                    <th className = 'create'>
                         Status
                         {isAdmin && (
                             <button onClick={createProject}>+ Create Project</button>
