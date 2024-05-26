@@ -27,23 +27,37 @@ import axios from "axios";
 
 const instance = axios.create({
   withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
 
+const keywordMapping = ["BUG", "FEATURE", "PERFORMANCE", "SECURITY", "UI", "DB", "INTEGRATION", "NETWORK", "API", "DOCS"];
+const priorityMapping = ["BLOCKER", "CRITICAL", "MAJOR", "MINOR", "TRIVIAL"];
+const statusMapping = ["NEW", "ASSIGNED", "FIXED", "RESOLVED", "CLOSED", "REOPENED"];
 
-export const getIssueDetail = async () => {
+export const getIssueDetail = async (projectId:number, issueId:number) => {
   try{
-    const response = await axios.get("/IssueDetailExample.json");
+    const response = await instance.get(`http://localhost:8080/projects/${projectId}/issues/${issueId}`);
     const data = response.data;
+    console.log('Received issue data:', data); 
+
     const issue = {
       id: data.id,
+      projectId: data.projectId,
       title: data.title,
       description: data.description,
+      keyword: keywordMapping[data.keyword],
       reporter: data.reporter,
+      reportedDate: data.reportedDate,
+      manager: data.manager,
       assignee: data.assignee,
-      priority: data.priority,
-      keyword: data.keyword,
-      status: data.status,
-      comment: data.comment, 
+      fixer: data.fixer,
+      priority: priorityMapping[data.priority],
+      status: statusMapping[data.status],
+      dueDate: data.dueDate,
+      closedDate: data.closedDate,
+      comment: data.comment 
     };
     return issue;
 
@@ -53,29 +67,37 @@ export const getIssueDetail = async () => {
   }
 };
 
+export const postComment = async (projectId: number, issueId: number, comment: { content: string }) => {
+  const response = await axios.post(`http://localhost:8080/projects/${projectId}/issues/${issueId}/comments`, comment);
+  return response.data;
+};
 
-export async function fetchIssue(projectId: number, issueId: number, sessionId: string) {
+export const postIssue = async (projectId: number, issueData : any) => {
   try {
-      const response = await axios.get(`/projects/${projectId}/issues/${issueId}`, {
-          headers: {
-              'Content-Type': 'application/json',
-              'Cookie': `JSESSIONID=${sessionId}`
-          }
-      });
-      return response.data;
-  } catch (error) {
-      console.error('Failed to fetch issue:', error);
-      throw error;
-  }
-}
-
-
-export const postIssue = async (issueData : any) => {
-  try {
-    const postResponse = await axios.post("/IssueCreateExample.json", issueData);
+    const postResponse = await instance.post(`http://localhost:8080/projects/${projectId}/issues`, issueData);
     return postResponse;
   } catch (error) {
     console.error('Error posting issue:', error);
+    throw error;
+  }
+};
+
+export const fetchIssue = async (projectId: number, issueId: number) => {
+  try {
+    const response = await instance.get(`http://localhost:8080/projects/${projectId}/issues/${issueId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching issue data:', error);
+    throw error;
+  }
+};
+
+export const patchIssue = async (projectId: number, issueId: number, issueData : any) => {
+  try {
+    const patchResponse = await instance.patch(`http://localhost:8080/projects/${projectId}/issues/${issueId}`, issueData);
+    return patchResponse;
+  } catch (error) {
+    console.error('Error patching issue:', error);
     throw error;
   }
 };

@@ -5,19 +5,20 @@ import { postIssue } from "../apis/apis";
 
 export default function IssueCreate() {
     const cardRef = useRef<ICardRef>(null);
-    const [formData] = useState({
+    const [formData, setFormData] = useState({
         title: '',
         description: '',
-        priority: 'major',
-        keyword: '',
-        due_date: ''
+        priority: 2,
+        keyword: 0,
+        dueDate: ''
     });
 
     const handleCreateIssue = async () => {
         if (cardRef.current) {
-            // const issueData = cardRef.current.getFormData();
+            const issueData = cardRef.current.getFormData();
             try {
-                const response = await postIssue(formData);
+                setFormData(issueData);
+                const response = await postIssue(1, issueData);
                 console.log('Issue created successfully:', response);
             } catch (error) {
                 console.error('Error creating issue:', error);

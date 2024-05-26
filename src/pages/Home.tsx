@@ -15,6 +15,7 @@ export default function Home() {
           <h1 className = "my-[30px]">Project</h1>
           {/* 임의로 넣은 버튼 삭제해도 됨 */}
           <button onClick={() => navigate('/issuedetail')} className="px-4 cursor-pointer text-themeDark text-xs">issuedetail</button>
+          <button onClick={() => navigate('/issuecreate')} className="px-4 cursor-pointer text-themeDark text-xs">issuecreate</button>
         </div>
       </div>
     </Container>
