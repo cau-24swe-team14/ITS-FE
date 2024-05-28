@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postSignup } from '../apis/apis';
+import styles from '../css/login.module.css';
 
 const SignupForm = () => {
   const [username, setUsername] = useState('');
@@ -29,30 +30,34 @@ const SignupForm = () => {
   };
 
   return (
-    <div>
+    <div className={styles.loginWrapper}>
+    <div className={styles.loginContainer}>
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Username:</label>
           <input
+            className={styles.input}
             type="text"
             value={username}
+            placeholder='Username'
             onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
         <div>
-          <label>Password:</label>
           <input
+            className={styles.input}
             type="password"
             value={password}
+            placeholder='Password'
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit">Sign Up</button>
+        <button className={styles.signupbutton} type="submit">Sign Up</button>
       </form>
+    </div>
     </div>
   );
 };

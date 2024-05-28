@@ -12,11 +12,11 @@ export default function Home() {
       {/* 마진 임의로 넣음 */}
       <div className="mx-auto">
         <div className="flex flex-col justify-between my-[77px] mx-[95px]">
-          <h1 className = "my-[30px]">Project</h1>
+          <div className = "my-[30px] text-[40px]">Project</div>
           {/* 임의로 넣은 버튼 삭제해도 됨 */}
           <button onClick={() => navigate('/users/login')} className="px-4 cursor-pointer text-themeDark text-xs">Login</button>
           <button onClick={() => navigate('/users/signup')} className="px-4 cursor-pointer text-themeDark text-xs">SignUp</button>
-          <button onClick={() => navigate('/issuedetail')} className="px-4 cursor-pointer text-themeDark text-xs">IssueDetail</button>
+          <button onClick={() => navigate('/issuedetail/:issueid')} className="px-4 cursor-pointer text-themeDark text-xs">IssueDetail</button>
           <button onClick={() => navigate('/projectlist')} className="px-4 cursor-pointer text-themeDark text-xs">ProjectList</button>
           <button onClick={() => navigate('/issuecreate')} className="px-4 cursor-pointer text-themeDark text-xs">issuecreate</button>
           <button onClick={() => navigate('/issuestatics')} className="px-4 cursor-pointer text-themeDark text-xs">issuestatics</button>

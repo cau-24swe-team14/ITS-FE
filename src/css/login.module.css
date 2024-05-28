@@ -1,0 +1,73 @@
+.loginWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loginContainer {
+  font-family: Arial, sans-serif;
+  margin: 200px;
+  /* padding: 1rem; */
+  width: 26%;
+  box-sizing: border-box;
+  /* border: 1px solid gray;
+  border-radius: 5px; */
+}
+
+.loginContainer h2 {
+  text-align: center;
+  font-size: 40px;
+  font-weight: 600;
+  margin-bottom: 50px;
+}
+
+/* .formDiv {
+  margin-bottom: 1rem;
+} */
+
+.label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-bottom: 50px;
+}
+
+.signupbutton {
+  padding: 0.5rem 1rem;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.signupbutton:hover {
+  background-color: #555;
+}
+
+.loginbutton {
+  padding: 0.5rem 1rem;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  width: 48%;
+  margin-right:4%;
+}
+
+.loginbutton:last-child {
+  margin-right: 0; /* 마지막 버튼 오른쪽 마진 제거 */
+}
+
+.loginbutton:hover {
+  background-color: #555;
+}
