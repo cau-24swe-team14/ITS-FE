@@ -119,6 +119,25 @@ export const patchIssue = async (projectId: number, issueId: number, issueData :
   }
 };
 
+export const getProject = async () => {
+  try{
+    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects`);
+    const data = response.data;
+    console.log('Received projects data:', data); 
+
+    const projects = {
+      isAdmin: data.isAdmin,
+      project : data.project
+    };
+    return projects;
+
+  } catch (error) {
+    console.error('Failed to fetch projects:', error);
+    throw error;
+  }
+};
+
+
 
 // /**
 //  * @param data login interface

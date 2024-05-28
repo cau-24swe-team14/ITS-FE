@@ -4,7 +4,7 @@ import "../css/list.css";
 import editIcon from "../assets/edit.png"
 import serchIcon from "../assets/search.png"
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import {getProject} from "../apis/apis.ts"
 
 interface Project {
   id: number;
@@ -14,28 +14,27 @@ interface Project {
 
 const ProjectStatus = ['Not Started', 'In Progress', 'Done']
 
-export const getShare = async () => {
-    try{
-      const url = `${import.meta.env.VITE_BASE_URL}/wee/comm/share/list`;
-      const response = await axios.get(url);
-      const shareData = response.data.data || [];
-      return shareData;
-    } catch (error) {
-      console.error('Error fetchig crew:', error);
-      throw error;
-    }
-  };
-
 const ProjectList: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, handlePageChange] = useState(1);
     const [listNum, setlistNum] = useState(5);
     const nav = useNavigate();
+    let project_list : any;
+
+    const loadprojects = async() => {
+        try{
+            project_list = await getProject()
+        }catch(err){}
+    }
+
+    loadprojects()
 
     //어드민 계정 활성화/비활성화
-    const isAdmin = true
+    const isAdmin = project_list.isAdmin===1?true:false;
+    const projects = project_list.project
 
     //프로젝트가 어떻게 나오는지 예시
+    /*
     const [projects, setProjects] = useState<Project[]>([
         { id: 1, title: 'Project Alpha', status: 0 },
         { id: 2, title: 'Project Beta', status: 1 },
@@ -45,7 +44,7 @@ const ProjectList: React.FC = () => {
         { id: 6, title: 'Project Gamma', status: 2 },
         { id: 7, title: 'Project Gamma', status: 0 },
     ]);
-
+    */
     const [projectView, setProjectView] = useState(projects.slice(listNum*(currentPage-1), listNum*(currentPage)));
     const [filterView, setfilterView] = useState(projects);
 
@@ -78,7 +77,7 @@ const ProjectList: React.FC = () => {
         handlePageChange(1);
         const status = Number(e.target.value)
         if(status>-1){
-            const filter_result = projects.filter(project => project.status == status)
+            const filter_result = projects.filter(()=>projects.status == status)
             setProjectView(filter_result.slice(listNum*0, listNum*1))
             setfilterView(filter_result)
         }else{
@@ -130,7 +129,7 @@ const ProjectList: React.FC = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {projectView.map(project => (
+                {projectView.map((project:any) => (
                     <tr key={project.id}>
                     <td><text onClick={()=>nav(`/issuelist/`+project.id)}>{project.title}</text></td>
                     <td className = "status-container">
