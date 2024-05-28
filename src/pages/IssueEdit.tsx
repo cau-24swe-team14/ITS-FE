@@ -6,11 +6,13 @@ import { patchIssue, fetchIssue } from "../apis/apis";
 export default function IssueEdit() {
     const [issueData, setIssueData] = useState(null);
     const cardRef = useRef<ICardRef>(null);
+    const projectId = 1;
+    const issueId = 1;
 
     useEffect(() => {
         async function fetchIssueData() {
             try {
-                const data = await fetchIssue(1, 1);
+                const data = await fetchIssue(projectId, issueId);
                 setIssueData(data);
             } catch (error) {
                 console.error('Failed to load issue data:', error);
@@ -24,7 +26,7 @@ export default function IssueEdit() {
         if (cardRef.current) {
             const formData = cardRef.current.getFormData();
             try {
-                await patchIssue(1, 1, formData);
+                await patchIssue(projectId, issueId, formData);
             } catch (error) {
                 console.error('이슈 업데이트 실패:', error);
             }

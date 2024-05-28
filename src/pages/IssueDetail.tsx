@@ -73,6 +73,7 @@ export default function IssueDetail() {
             <Container>
                 <div className="flex flex-col">
                     <Ticket 
+                        accountRole={issue.accountRole}
                         title={issue.title}
                         description={issue.description}
                         reporter={issue.reporter}
@@ -80,7 +81,7 @@ export default function IssueDetail() {
                         priority={issue.priority}
                         keyword={issue.keyword}
                     />
-                    <EditStatus status={issue.status}/>
+                    <EditStatus accountRole={issue.accountRole} status={issue.status}/>
                     <Comment 
                         projectId={parseInt(projectId)}
                         issueId={parseInt(issueId)}

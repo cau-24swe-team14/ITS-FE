@@ -32,6 +32,16 @@ const instance = axios.create({
   }
 });
 
+export const getIssueStatics = async (projectId: number, value: string) => {
+  try {
+    const response = await instance.get(`http://localhost:8080/projects/${projectId}/trend?category=${value}`);
+    return response.data;
+  } catch(error) {
+    console.error('Failed to fetch statics:', error);
+    throw error;
+  }
+};
+
 const keywordMapping = ["BUG", "FEATURE", "PERFORMANCE", "SECURITY", "UI", "DB", "INTEGRATION", "NETWORK", "API", "DOCS"];
 const priorityMapping = ["BLOCKER", "CRITICAL", "MAJOR", "MINOR", "TRIVIAL"];
 const statusMapping = ["NEW", "ASSIGNED", "FIXED", "RESOLVED", "CLOSED", "REOPENED"];
@@ -43,6 +53,7 @@ export const getIssueDetail = async (projectId:number, issueId:number) => {
     console.log('Received issue data:', data); 
 
     const issue = {
+      accountRole: data.accountRole,
       id: data.id,
       projectId: data.projectId,
       title: data.title,
@@ -68,8 +79,14 @@ export const getIssueDetail = async (projectId:number, issueId:number) => {
 };
 
 export const postComment = async (projectId: number, issueId: number, comment: { content: string }) => {
-  const response = await axios.post(`http://localhost:8080/projects/${projectId}/issues/${issueId}/comments`, comment);
-  return response.data;
+  try {
+    const response = await axios.post(`http://localhost:8080/projects/${projectId}/issues/${issueId}/comments`, comment);
+    return response.data;
+  } catch (error) {
+    console.error('Error posting issue:', error);
+    throw error;
+  }
+  
 };
 
 export const postIssue = async (projectId: number, issueData : any) => {

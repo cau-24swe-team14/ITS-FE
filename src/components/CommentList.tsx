@@ -18,7 +18,10 @@ export default function CommentList({ comments }: ICommentListProps) {
         <div className="flex flex-col mx-[171px] mb-[100px] w-[1098px]">
             <div className="text-[24px] font-semibold">Comment List</div>
             {safeComments.length === 0 ? (
-                <div>No comment</div>
+                <div className="my-[20px]">
+                    <div className="border border-[#D9D9D9]" />
+                    <div className="mx-[20px] my-[20px] font-semibold text-[18px]">No comment</div>
+                </div>
             ) : (
                 safeComments.map(comment => (
                     <div>

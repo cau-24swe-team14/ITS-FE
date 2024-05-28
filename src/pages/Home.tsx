@@ -16,6 +16,7 @@ export default function Home() {
           {/* 임의로 넣은 버튼 삭제해도 됨 */}
           <button onClick={() => navigate('/issuedetail')} className="px-4 cursor-pointer text-themeDark text-xs">issuedetail</button>
           <button onClick={() => navigate('/issuecreate')} className="px-4 cursor-pointer text-themeDark text-xs">issuecreate</button>
+          <button onClick={() => navigate('/issuestatics')} className="px-4 cursor-pointer text-themeDark text-xs">issuestatics</button>
         </div>
       </div>
     </Container>
