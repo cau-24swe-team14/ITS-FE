@@ -73,6 +73,48 @@ button:focus-visible {
   }
 }
 
+/* Login */
+/* 
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+div {
+  padding: 1rem;
+  max-width: 400px;
+  margin: auto;
+}
+ */
+form div {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  background-color: #555;
+}
+
 /* 스크롤바의 전체 컨테이너를 위한 스타일 */
 .div-container::-webkit-scrollbar {
   border-radius: 4px;
