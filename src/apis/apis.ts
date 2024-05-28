@@ -34,7 +34,7 @@ const instance = axios.create({
 
 export const getIssueStatics = async (projectId: number, value: string) => {
   try {
-    const response = await instance.get(`http://localhost:8080/projects/${projectId}/trend?category=${value}`);
+    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/trend?category=${value}`);
     return response.data;
   } catch(error) {
     console.error('Failed to fetch statics:', error);
@@ -48,7 +48,7 @@ const statusMapping = ["NEW", "ASSIGNED", "FIXED", "RESOLVED", "CLOSED", "REOPEN
 
 export const getIssueDetail = async (projectId:number, issueId:number) => {
   try{
-    const response = await instance.get(`http://localhost:8080/projects/${projectId}/issues/${issueId}`);
+    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}`);
     const data = response.data;
     console.log('Received issue data:', data); 
 
@@ -80,7 +80,7 @@ export const getIssueDetail = async (projectId:number, issueId:number) => {
 
 export const postComment = async (projectId: number, issueId: number, comment: { content: string }) => {
   try {
-    const response = await axios.post(`http://localhost:8080/projects/${projectId}/issues/${issueId}/comments`, comment);
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}/comments`, comment);
     return response.data;
   } catch (error) {
     console.error('Error posting issue:', error);
@@ -91,7 +91,7 @@ export const postComment = async (projectId: number, issueId: number, comment: {
 
 export const postIssue = async (projectId: number, issueData : any) => {
   try {
-    const postResponse = await instance.post(`http://localhost:8080/projects/${projectId}/issues`, issueData);
+    const postResponse = await instance.post(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues`, issueData);
     return postResponse;
   } catch (error) {
     console.error('Error posting issue:', error);
@@ -101,7 +101,7 @@ export const postIssue = async (projectId: number, issueData : any) => {
 
 export const fetchIssue = async (projectId: number, issueId: number) => {
   try {
-    const response = await instance.get(`http://localhost:8080/projects/${projectId}/issues/${issueId}`);
+    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching issue data:', error);
@@ -111,7 +111,7 @@ export const fetchIssue = async (projectId: number, issueId: number) => {
 
 export const patchIssue = async (projectId: number, issueId: number, issueData : any) => {
   try {
-    const patchResponse = await instance.patch(`http://localhost:8080/projects/${projectId}/issues/${issueId}`, issueData);
+    const patchResponse = await instance.patch(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}`, issueData);
     return patchResponse;
   } catch (error) {
     console.error('Error patching issue:', error);
