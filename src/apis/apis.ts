@@ -27,23 +27,48 @@ import axios from "axios";
 
 const instance = axios.create({
   withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
 
+export const getIssueStatics = async (projectId: number, value: string) => {
+  try {
+    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/trend?category=${value}`);
+    return response.data;
+  } catch(error) {
+    console.error('Failed to fetch statics:', error);
+    throw error;
+  }
+};
 
-export const getIssueDetail = async () => {
+const keywordMapping = ["BUG", "FEATURE", "PERFORMANCE", "SECURITY", "UI", "DB", "INTEGRATION", "NETWORK", "API", "DOCS"];
+const priorityMapping = ["BLOCKER", "CRITICAL", "MAJOR", "MINOR", "TRIVIAL"];
+const statusMapping = ["NEW", "ASSIGNED", "FIXED", "RESOLVED", "CLOSED", "REOPENED"];
+
+export const getIssueDetail = async (projectId:number, issueId:number) => {
   try{
-    const response = await axios.get("/IssueDetailExample.json");
+    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}`);
     const data = response.data;
+    console.log('Received issue data:', data); 
+
     const issue = {
+      accountRole: data.accountRole,
       id: data.id,
+      projectId: data.projectId,
       title: data.title,
       description: data.description,
+      keyword: keywordMapping[data.keyword],
       reporter: data.reporter,
+      reportedDate: data.reportedDate,
+      manager: data.manager,
       assignee: data.assignee,
-      priority: data.priority,
-      keyword: data.keyword,
-      status: data.status,
-      comment: data.comment, 
+      fixer: data.fixer,
+      priority: priorityMapping[data.priority],
+      status: statusMapping[data.status],
+      dueDate: data.dueDate,
+      closedDate: data.closedDate,
+      comment: data.comment 
     };
     return issue;
 
@@ -53,21 +78,46 @@ export const getIssueDetail = async () => {
   }
 };
 
-
-export async function fetchIssue(projectId: number, issueId: number, sessionId: string) {
+export const postComment = async (projectId: number, issueId: number, comment: { content: string }) => {
   try {
-      const response = await axios.get(`/projects/${projectId}/issues/${issueId}`, {
-          headers: {
-              'Content-Type': 'application/json',
-              'Cookie': `JSESSIONID=${sessionId}`
-          }
-      });
-      return response.data;
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}/comments`, comment);
+    return response.data;
   } catch (error) {
-      console.error('Failed to fetch issue:', error);
-      throw error;
+    console.error('Error posting issue:', error);
+    throw error;
   }
-}
+  
+};
+
+export const postIssue = async (projectId: number, issueData : any) => {
+  try {
+    const postResponse = await instance.post(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues`, issueData);
+    return postResponse;
+  } catch (error) {
+    console.error('Error posting issue:', error);
+    throw error;
+  }
+};
+
+export const fetchIssue = async (projectId: number, issueId: number) => {
+  try {
+    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching issue data:', error);
+    throw error;
+  }
+};
+
+export const patchIssue = async (projectId: number, issueId: number, issueData : any) => {
+  try {
+    const patchResponse = await instance.patch(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}`, issueData);
+    return patchResponse;
+  } catch (error) {
+    console.error('Error patching issue:', error);
+    throw error;
+  }
+};
 
 
 // /**

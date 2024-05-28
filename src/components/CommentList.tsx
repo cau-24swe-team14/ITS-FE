@@ -12,13 +12,18 @@ export interface ICommentProps {
 }
 
 export default function CommentList({ comments }: ICommentListProps) {
+    const safeComments = comments || [];
+
     return(
         <div className="flex flex-col mx-[171px] mb-[100px] w-[1098px]">
             <div className="text-[24px] font-semibold">Comment List</div>
-            {comments.length === 0 ? (
-                <div>No comments</div>
+            {safeComments.length === 0 ? (
+                <div className="my-[20px]">
+                    <div className="border border-[#D9D9D9]" />
+                    <div className="mx-[20px] my-[20px] font-semibold text-[18px]">No comment</div>
+                </div>
             ) : (
-                comments.map(comment => (
+                safeComments.map(comment => (
                     <div>
                         <div className="flex flex-row mt-[27px]">
                             <img src={profile} alt="프로필" className="w-[60px] h-[60px] mx-[20px] flex items-center justify-center"></img>
