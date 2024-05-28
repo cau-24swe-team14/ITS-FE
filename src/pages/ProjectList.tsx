@@ -4,6 +4,7 @@ import "../css/list.css";
 import editIcon from "../assets/edit.png"
 import serchIcon from "../assets/search.png"
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 interface Project {
   id: number;
@@ -12,6 +13,18 @@ interface Project {
 }
 
 const ProjectStatus = ['Not Started', 'In Progress', 'Done']
+
+export const getShare = async () => {
+    try{
+      const url = `${import.meta.env.VITE_BASE_URL}/wee/comm/share/list`;
+      const response = await axios.get(url);
+      const shareData = response.data.data || [];
+      return shareData;
+    } catch (error) {
+      console.error('Error fetchig crew:', error);
+      throw error;
+    }
+  };
 
 const ProjectList: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
