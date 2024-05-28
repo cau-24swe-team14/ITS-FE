@@ -22,8 +22,6 @@
 
 
 import axios from "axios";
-// import { ISignupProps } from "../pages/Signup"
-// import { ILoginDataProps } from "../pages/Login";
 
 const instance = axios.create({
   withCredentials: true,
@@ -31,6 +29,32 @@ const instance = axios.create({
     'Content-Type': 'application/json'
   }
 });
+
+export const postSignup = async (username: string, password: string) => {
+  try{
+    const response = await instance.post(`${import.meta.env.VITE_BASE_URL}/users/signup`,{
+      username,
+      password,
+    });
+    return response.status;
+  } catch (error) {
+    console.error('faile to signup:', error);
+    throw error;
+  }
+}
+
+export const postLogin = async (username:string, password:string) => {
+  try {
+    const response = await instance.post(`${import.meta.env.VITE_BASE_URL}/users/login`,{
+      username,
+      password,
+    });
+    return response.status;
+  } catch (error) {
+    console.error('Failed to login:', error);
+    throw error;
+  }
+}
 
 export const getIssueStatics = async (projectId: number, value: string) => {
   try {

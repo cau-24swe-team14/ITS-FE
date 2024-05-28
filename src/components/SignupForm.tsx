@@ -1,30 +1,26 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { postSignup } from '../apis/apis';
 
 const SignupForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const nav = useNavigate();
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event:any) => {
     event.preventDefault();
 
     try {
-      const response = await fetch('/users/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const data = await postSignup(username, password);
 
-      const data = await response.json();
-
-      if (data.success) {
+      if (data === 201) {
         // 회원가입 성공 처리
         alert('Signup successful');
+        nav('/projectlist');
       } else {
         // 회원가입 실패 처리
-        setError(data.message || 'Signup failed');
+        setError('Signup failed');
       }
     } catch (error) {
       console.error('Error:', error);
