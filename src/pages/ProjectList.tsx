@@ -18,20 +18,25 @@ const ProjectList: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, handlePageChange] = useState(1);
     const [listNum, setlistNum] = useState(5);
+    
     const nav = useNavigate();
-    let project_list : any;
+    const [projects, setProjects] = useState<Project[]>([]);
 
     const loadprojects = async() => {
         try{
-            project_list = await getProject()
-        }catch(err){}
+            const data = await getProject();
+            setProjects(data.project);
+            console.log(projects)
+        }catch(err){
+            console.error(""+err)
+        }
     }
 
     loadprojects()
 
     //어드민 계정 활성화/비활성화
-    const isAdmin = project_list.isAdmin===1?true:false;
-    const projects = project_list.project
+    const isAdmin = 1//project_list.isAdmin===1?true:false;
+    // const projects = project_list.project
 
     //프로젝트가 어떻게 나오는지 예시
     /*
@@ -77,7 +82,7 @@ const ProjectList: React.FC = () => {
         handlePageChange(1);
         const status = Number(e.target.value)
         if(status>-1){
-            const filter_result = projects.filter(()=>projects.status == status)
+            const filter_result = projects.filter((projects)=>projects.status == status)
             setProjectView(filter_result.slice(listNum*0, listNum*1))
             setfilterView(filter_result)
         }else{
