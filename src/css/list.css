@@ -1,0 +1,134 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+table {
+    width: 1024px;
+    height: auto;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+tr{
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding-left: 15px;
+    padding-right: 15px;
+    border-left: 1px solid #ddd;
+    text-align: left;
+    vertical-align: middle;
+    height: 50px;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+.main-title{
+    padding: 15px;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.title{
+    width: 30%;
+    height: 50px;
+}
+
+.create{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.edit-botton {
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+.status-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pagination {
+    text-align: center;
+    margin: 20px;
+}
+
+.pagination span {
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    margin: 0 5px;
+    border-radius: 5px;
+}
+
+.search{
+    display: flex;
+    justify-content: space-between;
+    
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 12px;
+    border: 1px solid #000;
+    height : 30px;
+    width : 200px;
+    margin-right: 20px;
+}
+
+.search-button{
+    border: none;
+    cursor: pointer;    
+    padding: 0%;
+    background: none;
+}
+
+.search-icon{
+    width: 20px; /* 고정 너비 */
+    height: 20px; /* 고정 높이 */
+    object-fit: cover; /* 이미지가 요소를 가득 채우도록 */
+    box-sizing: content-box; 
+}
+
+.search-filter{
+    display: flex;
+    justify-content: space-between;
+    justify-content: flex-start;
+}
+
+.search-bar{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.list-veiw{
+    border : border-black;
+    width : 100px;
+    height: 32px;
+    font-size: 12px;
+}
+
+.sub-title{
+    margin-left: 5px;
+    padding: 15px;
+    font-size: 30px;
+    color: gray;
+    font-weight: lighter;   
+}
+
+.project-info{
+    font-size: 15px;
+    color: gray;
+    font-weight: lighter;
+    width: 300px;   
+}
