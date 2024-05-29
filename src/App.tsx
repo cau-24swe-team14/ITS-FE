@@ -4,10 +4,12 @@ import IssueDetail from './pages/IssueDetail.tsx';
 import IssueEdit from './pages/IssueEdit.tsx';
 import IssueCreate from './pages/IssueCreate.tsx';
 import IssueStatics from './components/IssueStatics.tsx';
-import ProjectList from './pages/ProjectList.tsx';
 import IssueList from './pages/IssueList.tsx';
 import LoginForm from './components/LoginForm.tsx';
 import SignupForm from './components/SignupForm.tsx';
+import ProjectList from './pages/ProjectList.tsx';
+import ProjectCreate from "./pages/ProjectCreate.tsx";
+import ProjectUpdate from "./pages/ProjectUpdate.tsx";
 
 export default function App() {
   return (
@@ -19,8 +21,10 @@ export default function App() {
       <Route path={`/issueedit`} element={<IssueEdit />} />
       <Route path={`/issuecreate`} element={<IssueCreate />} />
       <Route path={`/issuestatics`} element={<IssueStatics />} />
-      <Route path={`/projectlist`} element={<ProjectList />} />
       <Route path={`/issuelist/:projectid`} element={<IssueList />} />
+      <Route path={`/projectlist`} element={<ProjectList />} />
+      <Route path={`/project/create`} element={<ProjectCreate />} />
+      <Route path={`/project/update/:projectid`} element={<ProjectUpdate />} />
     </Routes>
   )
 }

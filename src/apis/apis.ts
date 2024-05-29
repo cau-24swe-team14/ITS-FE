@@ -4,9 +4,6 @@
 //
 ////////////////////////////////////////
 
-
-
-
 ///////////////////////////////////////
 //
 //  NOTIFICATION
@@ -19,62 +16,88 @@
 //
 ///////////////////////////////////////
 
-
-
 import axios from "axios";
 
 const instance = axios.create({
   withCredentials: true,
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 });
 
 export const postSignup = async (username: string, password: string) => {
-  try{
-    const response = await instance.post(`${import.meta.env.VITE_BASE_URL}/users/signup`,{
-      username,
-      password,
-    });
+  try {
+    const response = await instance.post(
+      `${import.meta.env.VITE_BASE_URL}/users/signup`,
+      {
+        username,
+        password,
+      },
+    );
     return response.status;
   } catch (error) {
-    console.error('faile to signup:', error);
-    throw error;
-  }
-}
-
-export const postLogin = async (username:string, password:string) => {
-  try {
-    const response = await instance.post(`${import.meta.env.VITE_BASE_URL}/users/login`,{
-      username,
-      password,
-    });
-    return response.status;
-  } catch (error) {
-    console.error('Failed to login:', error);
-    throw error;
-  }
-}
-
-export const getIssueStatics = async (projectId: number, value: string) => {
-  try {
-    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/trend?category=${value}`);
-    return response.data;
-  } catch(error) {
-    console.error('Failed to fetch statics:', error);
+    console.error("faile to signup:", error);
     throw error;
   }
 };
 
-const keywordMapping = ["BUG", "FEATURE", "PERFORMANCE", "SECURITY", "UI", "DB", "INTEGRATION", "NETWORK", "API", "DOCS"];
-const priorityMapping = ["BLOCKER", "CRITICAL", "MAJOR", "MINOR", "TRIVIAL"];
-const statusMapping = ["NEW", "ASSIGNED", "FIXED", "RESOLVED", "CLOSED", "REOPENED"];
+export const postLogin = async (username: string, password: string) => {
+  try {
+    const response = await instance.post(
+      `${import.meta.env.VITE_BASE_URL}/users/login`,
+      {
+        username,
+        password,
+      },
+    );
+    return response.status;
+  } catch (error) {
+    console.error("Failed to login:", error);
+    throw error;
+  }
+};
 
-export const getIssueDetail = async (projectId:number, issueId:number) => {
-  try{
-    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}`);
+export const getIssueStatics = async (projectId: number, value: string) => {
+  try {
+    const response = await instance.get(
+      `${import.meta.env.VITE_BASE_URL}/projects/${projectId}/trend?category=${value}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch statics:", error);
+    throw error;
+  }
+};
+
+const keywordMapping = [
+  "BUG",
+  "FEATURE",
+  "PERFORMANCE",
+  "SECURITY",
+  "UI",
+  "DB",
+  "INTEGRATION",
+  "NETWORK",
+  "API",
+  "DOCS",
+];
+const priorityMapping = ["BLOCKER", "CRITICAL", "MAJOR", "MINOR", "TRIVIAL"];
+const statusMapping = [
+  "NEW",
+  "ASSIGNED",
+  "FIXED",
+  "RESOLVED",
+  "CLOSED",
+  "REOPENED",
+];
+
+export const getIssueDetail = async (projectId: number, issueId: number) => {
+  try {
+    const response = await instance.get(
+      `${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}`,
+    );
     const data = response.data;
-    console.log('Received issue data:', data); 
+    console.log("Received issue data:", data);
 
     const issue = {
       accountRole: data.accountRole,
@@ -92,76 +115,154 @@ export const getIssueDetail = async (projectId:number, issueId:number) => {
       status: statusMapping[data.status],
       dueDate: data.dueDate,
       closedDate: data.closedDate,
-      comment: data.comment 
+      comment: data.comment,
     };
     return issue;
-
   } catch (error) {
-    console.error('Failed to fetch issue:', error);
+    console.error("Failed to fetch issue:", error);
     throw error;
   }
 };
 
-export const postComment = async (projectId: number, issueId: number, comment: { content: string }) => {
+export const postComment = async (
+  projectId: number,
+  issueId: number,
+  comment: { content: string },
+) => {
   try {
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}/comments`, comment);
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}/comments`,
+      comment,
+    );
     return response.data;
   } catch (error) {
-    console.error('Error posting issue:', error);
+    console.error("Error posting issue:", error);
     throw error;
   }
-  
 };
 
-export const postIssue = async (projectId: number, issueData : any) => {
+export const postIssue = async (projectId: number, issueData: any) => {
   try {
-    const postResponse = await instance.post(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues`, issueData);
+    const postResponse = await instance.post(
+      `${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues`,
+      issueData,
+    );
     return postResponse;
   } catch (error) {
-    console.error('Error posting issue:', error);
+    console.error("Error posting issue:", error);
     throw error;
   }
 };
 
 export const fetchIssue = async (projectId: number, issueId: number) => {
   try {
-    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}`);
+    const response = await instance.get(
+      `${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}`,
+    );
     return response.data;
   } catch (error) {
-    console.error('Error fetching issue data:', error);
+    console.error("Error fetching issue data:", error);
     throw error;
   }
 };
 
-export const patchIssue = async (projectId: number, issueId: number, issueData : any) => {
+export const patchIssue = async (
+  projectId: number,
+  issueId: number,
+  issueData: any,
+) => {
   try {
-    const patchResponse = await instance.patch(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}`, issueData);
+    const patchResponse = await instance.patch(
+      `${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}`,
+      issueData,
+    );
     return patchResponse;
   } catch (error) {
-    console.error('Error patching issue:', error);
+    console.error("Error patching issue:", error);
     throw error;
   }
 };
 
 export const getProject = async () => {
-  try{
-    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects`);
+  try {
+    const response = await instance.get(
+      `${import.meta.env.VITE_BASE_URL}/projects`,
+    );
     const data = response.data;
-    console.log('Received projects data:', data); 
+    console.log("Received projects data:", data);
 
     const projects = {
       isAdmin: data.isAdmin,
-      project : data.project
+      project: data.project,
     };
-    return projects;
-
+    //return projects;
+    return {
+      isAdmin: 1,
+      project: [
+        {
+          id: 1,
+          title: "sample 1",
+          status: 1,
+        },
+        {
+          id: 2,
+          title: "sample 2",
+          status: 1,
+        },
+      ],
+    };
   } catch (error) {
-    console.error('Failed to fetch projects:', error);
+    console.error("Failed to fetch projects:", error);
     throw error;
   }
 };
 
+export const createProject = async (
+  name: string,
+  description: string,
+  users: Array<object>,
+) => {
+  //이가연
+  try {
+    const project = {
+      title: name,
+      description: description,
+      member: users,
+    };
+    const response = await instance.post(
+      `${import.meta.env.VITE_BASE_URL}/projects`,
+      project,
+    );
 
+    const data = response.data;
+    console.log("Post new project data:", data);
+
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch projects:", error);
+    throw error;
+  }
+};
+
+export const updateProject = async (
+  id: string,
+  name: string,
+  description: string,
+) => {
+  //이가연
+  try {
+    await instance.patch(`${import.meta.env.VITE_BASE_URL}/projects/${id}`, {
+      title: name,
+      description: description,
+    });
+
+    console.log("Patch new project data:", id);
+    return;
+  } catch (error) {
+    console.error("Failed to update projects:", error);
+    throw error;
+  }
+};
 
 // /**
 //  * @param data login interface
@@ -180,7 +281,6 @@ export const getProject = async () => {
 //   return instance.post(url, data);
 // }
 
-
 /**
  * SJW 2024.03.06
  * 크루 모집방 조회 (GET)
@@ -192,13 +292,13 @@ export const getProject = async () => {
 // };
 
 export const getCrew = async () => {
-  try{
+  try {
     const url = `${import.meta.env.VITE_BASE_URL}/wee/comm/crew/list`;
     const response = await axios.get(url);
     const crewData = response.data.data || [];
     return crewData;
   } catch (error) {
-    console.error('Error fetchig crew:', error);
+    console.error("Error fetchig crew:", error);
     throw error;
   }
 };
@@ -249,12 +349,27 @@ export const postCrew = async (crewData: any) => {
     const postResponse = await axios.post(url, crewData);
     return postResponse;
   } catch (error) {
-    console.error('Error posting crew:', error);
+    console.error("Error posting crew:", error);
     throw error;
   }
 };
 
-export const postCrew1 = async (crewId: number, userId: number, title: string, contents: string, like: number, createDate: Date, viewCnt: number, commentCnt: number, startDate: Date, endDate: Date, location: string, type: string, headcount: number, status: string) => {
+export const postCrew1 = async (
+  crewId: number,
+  userId: number,
+  title: string,
+  contents: string,
+  like: number,
+  createDate: Date,
+  viewCnt: number,
+  commentCnt: number,
+  startDate: Date,
+  endDate: Date,
+  location: string,
+  type: string,
+  headcount: number,
+  status: string,
+) => {
   try {
     const url = `${import.meta.env.VITE_BASE_URL}/wee/comm/crew`;
     // 서버에서 가장 최근에 추가된 crewId 값을 가져옵니다.
@@ -286,7 +401,7 @@ export const postCrew1 = async (crewId: number, userId: number, title: string, c
 
     return postResponse;
   } catch (error) {
-    console.error('Error posting crew:', error);
+    console.error("Error posting crew:", error);
     throw error;
   }
 };
@@ -296,24 +411,32 @@ export const postCrew1 = async (crewId: number, userId: number, title: string, c
  * 운동 루틴방 조회 (GET)
  */
 export const getShare = async () => {
-  try{
+  try {
     const url = `${import.meta.env.VITE_BASE_URL}/wee/comm/share/list`;
     const response = await axios.get(url);
     const shareData = response.data.data || [];
     return shareData;
   } catch (error) {
-    console.error('Error fetchig crew:', error);
+    console.error("Error fetchig crew:", error);
     throw error;
   }
 };
-
 
 /**
  * SJW 2024.03.06
  * 운동 루틴방 추가 (POST)
  */
-export const postShare = async (shareId: number, userId: number, title: string, contents: string, like: number, createDate: Date, viewCnt: number, commentCnt: number) => {
-  const response = await axios.post('/ShareExample.json', {
+export const postShare = async (
+  shareId: number,
+  userId: number,
+  title: string,
+  contents: string,
+  like: number,
+  createDate: Date,
+  viewCnt: number,
+  commentCnt: number,
+) => {
+  const response = await axios.post("/ShareExample.json", {
     shareId,
     userId,
     title,
@@ -331,13 +454,13 @@ export const postShare = async (shareId: number, userId: number, title: string, 
  * 운동 질문방 조회 (GET)
  */
 export const getQuestion = async () => {
-  try{
+  try {
     const url = `${import.meta.env.VITE_BASE_URL}/wee/comm/question/list`;
     const response = await axios.get(url);
     const questionData = response.data.data || [];
     return questionData;
   } catch (error) {
-    console.error('Error fetchig crew:', error);
+    console.error("Error fetchig crew:", error);
     throw error;
   }
 };
@@ -346,8 +469,19 @@ export const getQuestion = async () => {
  * SJW 2024.03.06
  * 운동 질문방 추가 (POST)
  */
-export const postQuestion = async (questionId: number, userId: number, title: string, contents: string, like: number, createDate: Date, viewCnt: number, commentCnt: number, type: string, status: string) => {
-  const response = await axios.post('/QuestionExample.json', {
+export const postQuestion = async (
+  questionId: number,
+  userId: number,
+  title: string,
+  contents: string,
+  like: number,
+  createDate: Date,
+  viewCnt: number,
+  commentCnt: number,
+  type: string,
+  status: string,
+) => {
+  const response = await axios.post("/QuestionExample.json", {
     questionId,
     userId,
     title,
