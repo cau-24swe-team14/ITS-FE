@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Container from "../components/Container.tsx";
-// import "../css/App.css";
 import { updateProject } from "../apis/apis.ts";
 
 function ProjectUpdate() {

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Container from "../components/Container.tsx";
-// import "../css/App.css";
 import { createProject } from "../apis/apis.ts";
 
 function ProjectCreate() {
