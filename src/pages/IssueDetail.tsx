@@ -73,6 +73,7 @@ export default function IssueDetail() {
             <Container>
                 <div className="flex flex-col">
                     <Ticket 
+                        issueId={issue.issueId}
                         accountRole={issue.accountRole}
                         title={issue.title}
                         description={issue.description}

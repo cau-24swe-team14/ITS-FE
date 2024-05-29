@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import editImage from "../assets/edit.png";
 
 export interface ITicketProps {
+    issueId: number,
     accountRole: number,
     title: string;
     description: string;
@@ -12,13 +13,13 @@ export interface ITicketProps {
     keyword: string;
 }
 
-const Ticket: React.FC<ITicketProps> = ({ accountRole, title, description, reporter, assignee, priority, keyword }) => {
+const Ticket: React.FC<ITicketProps> = ({ issueId, accountRole, title, description, reporter, assignee, priority, keyword }) => {
     const navigate = useNavigate();
 
     return (
         <div className="flex flex-col mx-[171px] my-[80px] w-[1098px] h-[422px] bg-[#D9D9D9] rounded-[5px]">
             <div className="flex flex-row justify-between">
-                <div className="ml-[21px] mt-[20px] text-[36px] font-semibold">#1</div>
+                <div className="ml-[21px] mt-[20px] text-[36px] font-semibold">#{issueId}</div>
                 {accountRole === 2 && (        
                     <img 
                         src={editImage} 

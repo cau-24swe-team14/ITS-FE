@@ -17,7 +17,7 @@ const LoginForm = () => {
 
       if (login_data === 200) {
         setError("로그인 성공");
-        nav('/projectlist');
+        nav('/projects');
         // onLogin(username, password);
         // 로그인 성공 처리
       } else {

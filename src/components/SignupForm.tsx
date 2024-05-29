@@ -18,7 +18,7 @@ const SignupForm = () => {
       if (data === 201) {
         // 회원가입 성공 처리
         alert('Signup successful');
-        nav('/projectlist');
+        nav('/projects');
       } else {
         // 회원가입 실패 처리
         setError('Signup failed');

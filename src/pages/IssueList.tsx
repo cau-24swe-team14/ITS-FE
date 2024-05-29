@@ -151,7 +151,7 @@ const IssueList: React.FC = () => {
                 </thead>
                 <tbody>
                 {issueView.map(issue => (
-                    <tr key={issue.id} onClick={()=>nav(`/issueDetail/`+issue.id)}>
+                    <tr key={issue.id} onClick={()=>nav(`/projects/:projectid/issues/`+issue.id)}>
                     <td>{issue.title}</td>
                     <td>{IssueStatue[issue.status]}</td>
                     <td>{issue.startDate}</td>

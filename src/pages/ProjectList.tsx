@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from "../components/Container.tsx";
 import "../css/list.css";
 import editIcon from "../assets/edit.png"
@@ -18,24 +18,40 @@ const ProjectList: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, handlePageChange] = useState(1);
     const [listNum, setlistNum] = useState(5);
-    
-    const nav = useNavigate();
+    const [isAdmin, setIsAdmin] = useState();
     const [projects, setProjects] = useState<Project[]>([]);
+    const [projectView, setProjectView] = useState(projects.slice(listNum*(currentPage-1), listNum*(currentPage)));
+    const [filterView, setfilterView] = useState(projects);
 
-    const loadprojects = async() => {
-        try{
-            const data = await getProject();
-            setProjects(data.project);
-            console.log(projects)
-        }catch(err){
-            console.error(""+err)
+    const nav = useNavigate();
+
+    useEffect(() => {
+        const loadprojects = async() => {
+            try{
+                const data = await getProject();
+                // admin 계정 확인
+                setIsAdmin(data.isAdmin);
+                setProjects(data.project);
+                setfilterView(data.project);
+                //refresh 하면 첫 프로젝트부터 보여줌
+                setProjectView(data.project.slice(0, listNum));
+                console.log(projects)
+            }catch(err){
+                console.error(""+err)
+            }
         }
-    }
+    
+        loadprojects();
+        // 페이지 변경될때마다 마운트
+    }, [listNum]);
 
-    loadprojects()
-
+    useEffect(() => {
+        setProjectView(filterView.slice((currentPage - 1) * listNum, currentPage * listNum));
+    }, [currentPage, filterView, listNum]);
+    
     //어드민 계정 활성화/비활성화
-    const isAdmin = 1//project_list.isAdmin===1?true:false;
+    // const isAdmin = projects.isAdmin === 1? true:false;
+    //const isAdmin = 1//project_list.isAdmin===1?true:false;
     // const projects = project_list.project
 
     //프로젝트가 어떻게 나오는지 예시
@@ -50,8 +66,7 @@ const ProjectList: React.FC = () => {
         { id: 7, title: 'Project Gamma', status: 0 },
     ]);
     */
-    const [projectView, setProjectView] = useState(projects.slice(listNum*(currentPage-1), listNum*(currentPage)));
-    const [filterView, setfilterView] = useState(projects);
+
 
     //누르면 프로젝트 추가 되도록(페이지 네비게이션)
     const createProject = () => {};
@@ -74,7 +89,8 @@ const ProjectList: React.FC = () => {
     const listSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setlistNum(Number(e.target.value));
         handlePageChange(1);
-        setProjectView(filterView.slice(Number(e.target.value)*0, Number(e.target.value)*1))
+        // useEffect로 뺌
+        // setProjectView(filterView.slice(Number(e.target.value)*0, Number(e.target.value)*1))
     };
 
     //필터 적용
@@ -83,11 +99,11 @@ const ProjectList: React.FC = () => {
         const status = Number(e.target.value)
         if(status>-1){
             const filter_result = projects.filter((projects)=>projects.status == status)
-            setProjectView(filter_result.slice(listNum*0, listNum*1))
+            // setProjectView(filter_result.slice(listNum*0, listNum*1))
             setfilterView(filter_result)
         }else{
             setfilterView(projects)
-            setProjectView(projects.slice(listNum*0, listNum*1))
+            // setProjectView(projects.slice(listNum*0, listNum*1))
         }
     };
 
@@ -136,9 +152,9 @@ const ProjectList: React.FC = () => {
                 <tbody>
                 {projectView.map((project:any) => (
                     <tr key={project.id}>
-                    <td><text onClick={()=>nav(`/issuelist/`+project.id)}>{project.title}</text></td>
+                    <td><text onClick={()=>nav(`/projects/`+project.id)}>{project.title}</text></td>
                     <td className = "status-container">
-                        <text onClick={()=>nav(`/issuelist/`+project.id)}>{ProjectStatus[project.status]}</text>
+                        <text onClick={()=>nav(`/projects/`+project.id)}>{ProjectStatus[project.status]}</text>
                         {isAdmin && (
                             <button className="edit-botton" onClick={editProject}>
                                 <img src={editIcon} alt="edit"/>
