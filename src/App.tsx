@@ -8,6 +8,8 @@ import ProjectList from './pages/ProjectList.tsx';
 import IssueList from './pages/IssueList.tsx';
 import LoginForm from './components/LoginForm.tsx';
 import SignupForm from './components/SignupForm.tsx';
+import ProjectCreate from './pages/ProjectCreate.tsx';
+import ProjectEdit from './pages/ProjectEdit.tsx';
 
 export default function App() {
   return (
@@ -20,6 +22,8 @@ export default function App() {
       <Route path={`/projects/:projectid/issues/issuecreate`} element={<IssueCreate />} />
       <Route path={`/issuestatics`} element={<IssueStatics />} />
       <Route path={`/projects`} element={<ProjectList />} />
+      <Route path={`/projects/:projectId/update`} element={<ProjectEdit />} />
+      <Route path={`/projects/create`} element={<ProjectCreate />} />
       <Route path={`/projects/:projectid`} element={<IssueList />} />
     </Routes>
   )

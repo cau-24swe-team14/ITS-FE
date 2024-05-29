@@ -151,4 +151,49 @@ export const getProject = async () => {
   }
 };
 
+export const createProject = async (
+  name: string,
+  description: string,
+  users: Array<object>,
+) => {
+  //이가연
+  try {
+    const project = {
+      title: name,
+      description: description,
+      member: users,
+    };
+    const response = await instance.post(
+      `${import.meta.env.VITE_BASE_URL}/projects`,
+      project,
+    );
 
+    const data = response.data;
+    console.log("Post new project data:", data);
+
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch projects:", error);
+    throw error;
+  }
+};
+
+export const updateProject = async (
+  projectId: string,
+  name: string,
+  description: string,
+) => {
+  //이가연
+  try {
+    await instance.patch(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}`, {
+      title: name,
+      description: description,
+    });
+
+    console.log("Patch new project data:", projectId);
+    return;
+  } catch (error) {
+    console.error("Failed to update projects:", error);
+    throw error;
+  }
+};

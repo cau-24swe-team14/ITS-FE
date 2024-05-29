@@ -21,6 +21,7 @@ export default function Home() {
           <button onClick={() => navigate('/projects/:projectid/issues/issuecreate')} className="px-4 cursor-pointer text-themeDark text-xs">issuecreate</button>
           <button onClick={() => navigate('/issuestatics')} className="px-4 cursor-pointer text-themeDark text-xs">issuestatics</button>
           <button onClick={() => navigate('/projects/:projectid')} className="px-4 cursor-pointer text-themeDark text-xs">issuelist</button>
+          <button onClick={() => navigate('/projects/:projectid/update')} className="px-4 cursor-pointer text-themeDark text-xs">projectedit</button>
 
         </div>
       </div>

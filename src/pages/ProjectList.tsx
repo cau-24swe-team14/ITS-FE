@@ -4,7 +4,7 @@ import "../css/list.css";
 import editIcon from "../assets/edit.png"
 import serchIcon from "../assets/search.png"
 import { useNavigate } from "react-router-dom";
-import {getProject} from "../apis/apis.ts"
+import { getProject } from "../apis/apis.ts"
 
 interface Project {
   id: number;
@@ -69,7 +69,9 @@ const ProjectList: React.FC = () => {
 
 
     //누르면 프로젝트 추가 되도록(페이지 네비게이션)
-    const createProject = () => {};
+    const createProject = () => {
+        nav('/projects/create');
+    };
 
     //edit 버튼 누르면 edit 택스트 추가되도록(페이지 네비게이션)
     const editProject = () => {};
