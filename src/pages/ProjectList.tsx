@@ -115,17 +115,6 @@ const ProjectList: React.FC = () => {
                 <h2 className='main-title'>Project</h2>
                 <div className='search-bar'>
                 <div className='search-filter'>
-                        <div className='search'>    
-                            <input
-                                type="text"
-                                placeholder="search"
-                                value={searchTerm}
-                                onChange={handleSearchChange}
-                            />
-                            <button className="search-button" onClick={handleSearch}>
-                                <img src = {serchIcon} alt = "" className='search-icon'/> 
-                            </button>
-                        </div>
                         <select className="list-veiw" onChange={filtering_status}>
                             <option value="-1">any</option>
                             <option value="0">not Started</option>

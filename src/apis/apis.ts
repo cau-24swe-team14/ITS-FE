@@ -151,6 +151,41 @@ export const getProject = async () => {
   }
 };
 
+export const getIssue = async (projectId:number) => {
+  try{
+    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}`);
+    const data = response.data;
+    
+    const projects = {
+      accountRole: data.accountRole,
+      projectId : data.id,
+      projectTitle : data.title,
+      projectDescription : data.description,
+      projectDate : data.date,
+      projectStatus : data.status,
+      projectMember : data.member,
+      issue : data.issue
+    };
+    return projects;
+
+  } catch (error) {
+    console.error('Failed to fetch issues:', error);
+    throw error;
+  }
+};
+
+export const searchIssue = async (projectId:number, key:string, value:string) => {
+  try{
+    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues?${key}=${value}`);
+    const data = response.data;
+    return data;
+
+  } catch (error) {
+    console.error('Failed to search issues:', error);
+    throw error;
+  }
+};
+
 export const createProject = async (
   name: string,
   description: string,
