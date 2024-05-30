@@ -36,7 +36,6 @@ const LoginForm = () => {
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          {/* <label className={styles.label}>Username:</label> */}
           <input className={styles.input}
             type="text"
             value={username}
@@ -46,7 +45,6 @@ const LoginForm = () => {
           />
         </div>
         <div >
-          {/* <label className={styles.label}>Password:</label> */}
           <input className={styles.input}
             type="password"
             value={password}

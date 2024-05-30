@@ -23,7 +23,7 @@ export default function IssueDetail() {
         try {
             // if(projectId && issueId){
                 console.log(`Fetching issue details for projectId: ${projectId}, issueId: ${issueId}`);
-                const data = await getIssueDetail(1, 1);
+                const data = await getIssueDetail(parseInt(projectId), parseInt(issueId));
                 // parseInt(projectId), parseInt(issueId)
                 console.log('Fetched issue data:', data);
 

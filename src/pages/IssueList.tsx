@@ -53,6 +53,7 @@ const IssueList: React.FC = () => {
                 if(projectid!==undefined) {
                     //서버에서 데이터 가져와서 저장
                     const data = await getIssue(parseInt(projectid, 10));
+                    console.log(data.accountRole);
                     if(data.accountRole === 2){
                         checkTester(true)
                     }

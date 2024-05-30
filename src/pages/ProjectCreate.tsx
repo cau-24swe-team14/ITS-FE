@@ -10,10 +10,11 @@ function ProjectCreate() {
   const [searchUsername, setSearchUsername] = useState("");
   const [searchRole, setSearchRole] = useState("");
   const [users, setUsers] = useState([
-    { username: "PL1", role: "PL" },
-    { username: "PL2", role: "PL" },
-    { username: "Dev1", role: "Dev" },
-    { username: "Dev2", role: "Dev" },
+    { username: "PL1", role: 0 },
+    { username: "PL2", role: 0 },
+    { username: "Dev1", role: 1 },
+    { username: "Dev2", role: 1 },
+    { username: "Tester1", role: 2}
   ]);
 
   const addUser = () => {
@@ -22,7 +23,7 @@ function ProjectCreate() {
         ...users,
         {
           username: username,
-          role: role,
+          role: parseInt(role),
         },
       ]);
       setUsername("");
@@ -45,7 +46,7 @@ function ProjectCreate() {
     return (
       (!searchUsername ||
         user.username.toLowerCase().includes(searchUsername.toLowerCase())) &&
-      (!searchRole || user.role === searchRole)
+      (!searchRole || user.role === parseInt(searchRole))
     );
   });
 
@@ -99,9 +100,9 @@ function ProjectCreate() {
                           value={searchRole}
                           onChange={(e) => setSearchRole(e.target.value)}>
                             <option value="">All Roles</option>
-                            <option value="PL">PL</option>
-                            <option value="Dev">Dev</option>
-                            <option value="Tester">Tester</option>
+                            <option value="0">PL</option>
+                            <option value="1">Dev</option>
+                            <option value="2">Tester</option>
                         </select>
                     </div>
                     <button

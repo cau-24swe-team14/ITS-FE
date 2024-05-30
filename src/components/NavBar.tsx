@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { postLogout } from "../apis/apis";
 
 /**
  * @returns 네비게이션 바
@@ -12,13 +13,25 @@ export default function NavBar() {
     nav(
       `${
         destination === "login"
-          ? "/login"
+          ? "/users/login"
           : destination === "main"
           ? "/"
           : `/${destination}`
       }`
     );
   };
+
+  const handleLogout = async () => {
+    try {
+      const data = await postLogout();
+      if (data === 200) {
+        alert('logout');
+        nav("/users/login");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div className="sticky top-0 left-0 z-50 shadow-md">
@@ -38,7 +51,7 @@ export default function NavBar() {
           {/* Navigation */}
           <p className="text-[15px]underline"> logged in as {user} </p>
           <div
-            onClick={onMove}
+            onClick={handleLogout}
             className="px-4 cursor-pointer text-themeDark text-[15px] sm:text-sm font-semibold"
             id={`login`}
           >

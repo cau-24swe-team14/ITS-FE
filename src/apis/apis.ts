@@ -12,9 +12,10 @@
 
 
 import axios from "axios";
+axios.defaults.withXSRFToken = true;
 
 const instance = axios.create({
-  withCredentials: true,
+  withXSRFToken: true,
   headers: {
     'Content-Type': 'application/json'
   }
@@ -42,6 +43,16 @@ export const postLogin = async (username:string, password:string) => {
     return response.status;
   } catch (error) {
     console.error('Failed to login:', error);
+    throw error;
+  }
+}
+
+export const postLogout = async () => {
+  try {
+    const response = await instance.post(`${import.meta.env.VITE_BASE_URL}/users/logout`, {});
+    return response.status;
+  } catch (error) {
+    console.error('Failed to logout:', error);
     throw error;
   }
 }
@@ -94,7 +105,7 @@ export const getIssueDetail = async (projectId:number, issueId:number) => {
 
 export const postComment = async (projectId: number, issueId: number, comment: { content: string }) => {
   try {
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}/comments`, comment);
+    const response = await instance.post(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}/comments`, comment);
     return response.data;
   } catch (error) {
     console.error('Error posting issue:', error);
@@ -186,17 +197,13 @@ export const searchIssue = async (projectId:number, key:string, value:string) =>
   }
 };
 
-export const createProject = async (
-  name: string,
-  description: string,
-  users: Array<object>,
-) => {
+export const createProject = async (name: string, description: string, users: Array<object>,) => {
   //이가연
   try {
     const project = {
       title: name,
       description: description,
-      member: users,
+      member: users
     };
     const response = await instance.post(
       `${import.meta.env.VITE_BASE_URL}/projects`,

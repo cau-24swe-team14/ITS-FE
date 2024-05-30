@@ -31,6 +31,7 @@ const ProjectList: React.FC = () => {
                 const data = await getProject();
                 // admin 계정 확인
                 setIsAdmin(data.isAdmin);
+                console.log(data.isAdmin);
                 setProjects(data.project);
                 setfilterView(data.project);
                 //refresh 하면 첫 프로젝트부터 보여줌
@@ -74,7 +75,9 @@ const ProjectList: React.FC = () => {
     };
 
     //edit 버튼 누르면 edit 택스트 추가되도록(페이지 네비게이션)
-    const editProject = () => {};
+    const editProject = () => {
+        nav('/projects/:projectid/update');
+    };
 
     //검색 버튼을 눌렀을떄 수행
     const handleSearch = () => {
