@@ -116,7 +116,7 @@ const IssueList: React.FC = () => {
 
     // createIssue 페이지로 가도록 네비게이션
     const createIssue = () => {
-        nav(`/projects/:projectid/issues/issuecreate`)
+        nav(`/projects/${projectid}/issues/issuecreate`)
     };
 
     //검색 버튼을 눌렀을떄 수행
@@ -246,7 +246,7 @@ const IssueList: React.FC = () => {
                 </thead>
                 <tbody>
                 {issueView.map(issue => (
-                    <tr key={issue.id} onClick={()=>nav(`/projects/:projectid/issues/`+issue.id)}>
+                    <tr key={issue.id} onClick={()=>nav(`/projects/${projectid}/issues/`+issue.id)}>
                     <td>{issue.title}</td>
                     <td>{IssueStatue[issue.status]}</td>
                     <td>{issue.reportedDate}</td>
