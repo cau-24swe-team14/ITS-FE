@@ -12,10 +12,9 @@
 
 
 import axios from "axios";
-axios.defaults.withXSRFToken = true;
 
 const instance = axios.create({
-  withXSRFToken: true,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json'
   }
