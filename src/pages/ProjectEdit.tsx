@@ -1,26 +1,26 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Container from "../components/Container.tsx";
-import { updateProject } from "../apis/apis.ts";
+import { getProjectById, updateProjectById } from "../apis/apis.ts";
 
 function ProjectUpdate() {
   const { projectId } = useParams<{ projectId: any }>();
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
-  const [username, setUsername] = useState("");
-  const [role, setRole] = useState("");
   const [searchUsername, setSearchUsername] = useState("");
   const [searchRole, setSearchRole] = useState("");
+
   const [users, setUsers] = useState([
     { username: "PL1", role: "PL" },
     { username: "PL2", role: "PL" },
     { username: "Dev1", role: "Dev" },
     { username: "Dev2", role: "Dev" },
   ]);
+  //const [users, setUsers] = useState(getProjectById(projectId));
 
   const handleUpdateProject = async () => {
     try {
-      await updateProject(projectId, projectName, projectDescription);
+      await updateProjectById(projectId, projectName, projectDescription);
       console.log("프로젝트 업데이트:", projectId);
     } catch (err) {
       console.error("" + err);
@@ -34,20 +34,6 @@ function ProjectUpdate() {
       (!searchRole || user.role === searchRole)
     );
   });
-
-  const addUser = () => {
-    if (username && role) {
-      setUsers([
-        ...users,
-        {
-          username: username,
-          role: role,
-        },
-      ]);
-      setUsername("");
-      setRole("");
-    }
-  };
 
   return (
     <Container>
@@ -85,9 +71,9 @@ function ProjectUpdate() {
 
       </div>
       <div className="mt-[50px] mx-[34px]">
-          <h3 className="text-[24px] mb-[20px]">Add User</h3>
+          <h3 className="text-[24px] mb-[20px]">Search User</h3>
             <div className="px-[40px] w-[1222px] bg-[#F9F9F9] border border-[#747474] rounded-[10px]">
-                <div className="flex flex-row justify-between px-[50px] py-[30px]">
+                <div className="flex flex-row items-center px-[55px] py-[30px]">
                     <div className="flex flex-row items-center ">
                         <label className="text-[20px] mr-[15px]">Username:</label>
                         <input
@@ -96,6 +82,7 @@ function ProjectUpdate() {
                           value={searchUsername}
                           onChange={(e) => setSearchUsername(e.target.value)} />
                     </div>
+                    <div className="mx-[20px]"></div>
                     <div className="flex flex-row items-center">
                         <label className="text-[20px] mr-[15px]">Role:</label>
                         <select
@@ -108,10 +95,6 @@ function ProjectUpdate() {
                             <option value="Tester">Tester</option>
                         </select>
                     </div>
-                    <button
-                          className="w-[100px] h-[39px] hover:bg-[#D9D9D9] hover:text-black bg-black text-white rounded-[5px] font-semibold text-[15px]"
-                          onClick={ addUser }>Add
-                        </button>
                 </div>
                 <table className="mx-[50px] mb-[30px]">
                     <thead>

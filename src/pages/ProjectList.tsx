@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Container from "../components/Container.tsx";
 import "../css/list.css";
 import editIcon from "../assets/edit.png"
-import serchIcon from "../assets/search.png"
 import { useNavigate } from "react-router-dom";
-import { getProject } from "../apis/apis.ts"
+import { getProjects } from "../apis/apis.ts"
 
 interface Project {
   id: number;
@@ -18,7 +17,7 @@ const ProjectList: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, handlePageChange] = useState(1);
     const [listNum, setlistNum] = useState(5);
-    const [isAdmin, setIsAdmin] = useState();
+    const [isAdmin, setIsAdmin] = useState(1);
     const [projects, setProjects] = useState<Project[]>([]);
     const [projectView, setProjectView] = useState(projects.slice(listNum*(currentPage-1), listNum*(currentPage)));
     const [filterView, setfilterView] = useState(projects);
@@ -28,7 +27,7 @@ const ProjectList: React.FC = () => {
     useEffect(() => {
         const loadprojects = async() => {
             try{
-                const data = await getProject();
+                const data = await getProjects();
                 // admin 계정 확인
                 setIsAdmin(data.isAdmin);
                 console.log(data.isAdmin);
@@ -114,8 +113,16 @@ const ProjectList: React.FC = () => {
 
     return (
         <Container>
-            <div>
+            <div className="my-[50px] mx-[60px]">
+            <div className="flex justify-between mb-[28px]">
                 <h2 className='main-title'>Project</h2>
+                {
+                    (isAdmin == 1) && <button 
+                    className="w-[144px] h-[44px] hover:bg-[#D9D9D9] hover:text-black bg-black text-white rounded-[5px] font-semibold" 
+                    onClick={createProject}>new project
+                </button>
+                }
+            </div>
                 <div className='search-bar'>
                 <div className='search-filter'>
                         <select className="list-veiw" onChange={filtering_status}>

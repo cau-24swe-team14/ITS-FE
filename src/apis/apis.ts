@@ -144,7 +144,7 @@ export const patchIssue = async (projectId: number, issueId: number, issueData :
   }
 };
 
-export const getProject = async () => {
+export const getProjects = async () => {
   try{
     const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects`);
     const data = response.data;
@@ -158,6 +158,21 @@ export const getProject = async () => {
 
   } catch (error) {
     console.error('Failed to fetch projects:', error);
+    throw error;
+  }
+};
+
+//이가연
+export const getProjectById = async (projectId:number) => {
+  try{
+    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}`);
+    const data = response.data;
+    console.log('Received project data by id:', data); 
+
+    return data;
+
+  } catch (error) {
+    console.error('Failed to fetch project by id:', error);
     throw error;
   }
 };
@@ -197,13 +212,18 @@ export const searchIssue = async (projectId:number, key:string, value:string) =>
   }
 };
 
-export const createProject = async (name: string, description: string, users: Array<object>,) => {
-  //이가연
+//이가연
+export const createProject = async (
+  title: string, 
+  description: string, 
+  member: Array<object>,
+) => {
+  
   try {
     const project = {
-      title: name,
+      title: title,
       description: description,
-      member: users
+      member: member
     };
     const response = await instance.post(
       `${import.meta.env.VITE_BASE_URL}/projects`,
@@ -211,25 +231,26 @@ export const createProject = async (name: string, description: string, users: Ar
     );
 
     const data = response.data;
-    console.log("Post new project data:", data);
-
+    console.log("Post new project data: Location:", data);
     return data;
+
   } catch (error) {
     console.error("Failed to fetch projects:", error);
     throw error;
   }
 };
 
-export const updateProject = async (
+//이가연
+export const updateProjectById = async (
   projectId: string,
-  name: string,
-  description: string,
+  name?: string,
+  description?: string,
 ) => {
-  //이가연
+
   try {
     await instance.patch(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}`, {
       title: name,
-      description: description,
+      description: description, //에러 확인 필요
     });
 
     console.log("Patch new project data:", projectId);
