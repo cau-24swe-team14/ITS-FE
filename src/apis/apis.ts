@@ -242,17 +242,9 @@ export const createProject = async (name: string, description: string, users: Ar
   }
 };
 
-export const updateProject = async (
-  projectId: number,
-  name: string,
-  description: string,
-) => {
-  //이가연
+export const updateProject = async (projectId: number, projectData: { title: string, description: string, member: Array<object> }) => {
   try {
-    await instance.patch(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}`, {
-      title: name,
-      description: description,
-    });
+    await instance.patch(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}`, projectData);
 
     console.log("Patch new project data:", projectId);
     return;

@@ -22,9 +22,14 @@ function ProjectCreate() {
     try {
       const user = await getUser(username);
       if (user) {
-        setUsers(users => [...users, { username: username, role: role }]);
-        setUsername(""); // Clear the input field after adding
-        setRole(0); // Clear the input field after adding
+        const isUserExists = users.some((u) => u.username === username);
+        if (!isUserExists) {
+          setUsers(users => [...users, { username: username, role: role }]);
+          setUsername(""); // 입력 필드 초기화
+          setRole(0); // 입력 필드 초기화
+        } else {
+          console.error("User already exists");
+        }
       } else {
         console.error("User not found");
       }

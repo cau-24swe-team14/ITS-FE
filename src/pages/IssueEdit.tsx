@@ -2,13 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import Container from "../components/Container";
 import Card, { ICardRef } from "../components/Card";
 import { patchIssue, fetchIssue } from "../apis/apis";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 export default function IssueEdit() {
     const {projectId, issueId} = useParams<{projectId : any, issueId : any}>();
     const [issueData, setIssueData] = useState(null);
     const cardRef = useRef<ICardRef>(null);
+    const nav = useNavigate();
 
     useEffect(() => {
         async function fetchIssueData() {
@@ -34,6 +35,7 @@ export default function IssueEdit() {
             const formData = cardRef.current.getFormData();
             try {
                 await patchIssue(projectId, issueId, formData);
+                nav(`/projects/${projectId}/issues/${issueId}`)
             } catch (error) {
                 console.error('이슈 업데이트 실패:', error);
             }
