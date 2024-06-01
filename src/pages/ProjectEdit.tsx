@@ -7,8 +7,8 @@ function ProjectUpdate() {
   const { projectId } = useParams<{ projectId: string | undefined }>();
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
-  const [username, setUsername] = useState("");
-  const [role, setRole] = useState("");
+  // const [username, setUsername] = useState("");
+  // const [role, setRole] = useState("");
   const [searchUsername, setSearchUsername] = useState("");
   const [searchRole, setSearchRole] = useState("");
   const [users, setUsers] = useState<{ username: string, role: string }[]>([]);
@@ -50,19 +50,19 @@ function ProjectUpdate() {
     );
   });
 
-  const addUser = () => {
-    if (username && role) {
-      setUsers([
-        ...users,
-        {
-          username: username,
-          role: role,
-        },
-      ]);
-      setUsername("");
-      setRole("");
-    }
-  };
+  // const addUser = () => {
+  //   if (username && role) {
+  //     setUsers([
+  //       ...users,
+  //       {
+  //         username: username,
+  //         role: role,
+  //       },
+  //     ]);
+  //     setUsername("");
+  //     setRole("");
+  //   }
+  // };
 
   return (
     <Container>
@@ -125,7 +125,7 @@ function ProjectUpdate() {
                     </div>
                     <button
                           className="w-[100px] h-[39px] hover:bg-[#D9D9D9] hover:text-black bg-black text-white rounded-[5px] font-semibold text-[15px]"
-                          onClick={ addUser }>Add
+                          >Add
                         </button>
                 </div>
                 <table className="mx-[50px] mb-[30px]">
