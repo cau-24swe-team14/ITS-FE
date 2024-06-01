@@ -137,7 +137,7 @@ const ProjectList: React.FC = () => {
                     <th className = 'title'>Title</th>
                     <th className = 'create'>
                         Status
-                        {isAdmin && (
+                        {isAdmin===1 && (
                             <button onClick={createProject}>+ Create Project</button>
                         )}
                     </th>
@@ -149,7 +149,7 @@ const ProjectList: React.FC = () => {
                     <td><text onClick={()=>nav(`/projects/`+project.id)}>{project.title}</text></td>
                     <td className = "status-container">
                         <text onClick={()=>nav(`/projects/`+project.id)}>{ProjectStatus[project.status]}</text>
-                        {isAdmin && (
+                        {isAdmin===1 && (
                             <button className="edit-botton" onClick={() => {editProject(project.id)}}>
                                 <img src={editIcon} alt="edit"/>
                             </button>

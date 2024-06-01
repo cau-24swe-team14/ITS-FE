@@ -4,6 +4,7 @@ import "../css/list.css";
 import serchIcon from "../assets/search.png"
 import { useNavigate, useParams } from "react-router-dom";
 import { getIssue, searchIssue } from "../apis/apis.ts"
+import IssueStatics from '../components/IssueStatics.tsx';
 
 interface Issue {
   id: number;
@@ -97,10 +98,8 @@ const IssueList: React.FC = () => {
                     if(searchFilter==="" || searchTerm ===""){
                         return
                     }
-                    //서버에서 데이터 가져와서 저장
                     const data = await searchIssue(parseInt(projectId, 10), searchFilter, searchTerm);
                     setIssues(data)
-                    //refresh 하면 첫 이슈부터 보여줌
                     setIssueView(issues.slice(listNum*(currentPage-1), listNum*(currentPage)))
                     setfilterView(issues)
                 }
@@ -115,15 +114,13 @@ const IssueList: React.FC = () => {
         
     }, [isSearch, projectId, searchFilter, searchTerm, listNum, currentPage]);
 
-    // createIssue 페이지로 가도록 네비게이션
     const createIssue = () => {
         nav(`/projects/${projectId}/issues/issuecreate`)
     };
 
     //검색 버튼을 눌렀을떄 수행
     const handleSearch = () => {
-        // 검색 로직 추가
-        // 실제 검색 로직을 여기서 수행
+
         clickSearch(true);
     };
 
@@ -157,6 +154,13 @@ const IssueList: React.FC = () => {
         handlePageChange(1);
         const status = Number(e.target.value)
         setSearchFilter(searchFilters[status])
+    };
+
+
+    const [showIssueStatics, setShowIssueStatics] = useState(false);
+
+    const handleShowIssueStatics = () => {
+        setShowIssueStatics(!showIssueStatics);
     };
 
     return (
@@ -222,16 +226,24 @@ const IssueList: React.FC = () => {
                             <option value="4">closed</option>
                             <option value="5">reopened</option>
                         </select>
+                        <button className="mx-[10px] text-[12px] bg-transparent" onClick={handleShowIssueStatics}>
+                            IssueStatics
+                        </button>
 
                     </div>
-                    <select className="list-veiw" onChange={listSelect}>
-                        <option value="5">5개씩 보기</option>
-                        <option value="10">10개씩 보기</option>
-                        <option value="25">25개씩 보기</option>
-                    </select>
+                    {!showIssueStatics && (
+                        <select className="list-veiw" onChange={listSelect}>
+                            <option value="5">5개씩 보기</option>
+                            <option value="10">10개씩 보기</option>
+                            <option value="25">25개씩 보기</option>
+                        </select>
+                    )}
                 </div>
-                
-                <table style={{ height: `${50 * (listNum+1)}px` }}>
+                {showIssueStatics ? (
+                    <IssueStatics />
+                ) : (
+                    <>
+                    <table style={{ height: `${50 * (listNum+1)}px` }}>
                 <thead>
                 <tr>
                     <th className = 'title'>Title</th>
@@ -264,6 +276,10 @@ const IssueList: React.FC = () => {
                     {currentPage<Math.ceil(filterView.length/listNum)?<span onClick={() => {handlePageChange(currentPage + 1); setIssueView(filterView.slice(listNum*(currentPage), listNum*(currentPage+1)))}}>
                         &gt;</span>:<span>&gt;</span>}
                 </div>
+                    </>
+                )}
+
+                
             </div>
         </Container>
     );

@@ -48,18 +48,18 @@ export interface ITopProps {
 export interface IBestProps {
     weekly: {
         data: {
-            PL: {
+            pl: {
                 username: string,
                 count: number
-            }[];
-            DEV:{
+            };
+            dev:{
                 username: string,
                 count: number
-            }[];
-            TESTER:{
+            };
+            tester:{
                 username: string,
                 count: number
-            }[];
+            };
         }
     }
 }

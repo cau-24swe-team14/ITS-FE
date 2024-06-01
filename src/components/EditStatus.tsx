@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { patchIssue } from "../apis/apis";
+import { patchIssue, getAssinee } from "../apis/apis";
 
 export interface IEditStatusProps {
     status: string;
@@ -14,6 +14,22 @@ const stat = ["NEW", "ASSIGNED", "FIXED", "RESOLVED", "CLOSED", "REOPENED"];
 export default function EditStatus({ status, accountRole, projectId, issueId, assignee }: IEditStatusProps) {    
     const [selectedStatus, setSelectedStatus] = useState(status);
     const [assign, setAssign] = useState(assignee);
+//     const [recommend, setRecommend] = useState<string[]>([]);
+
+//     useEffect(() => {
+//     const fetchAssignees = async () => {
+//         try {
+//             const response = await getAssinee(projectId); // API 호출 시 projectId 필요한지 확인 필요
+//             // API 응답 구조에 따라 username을 추출하는 방식을 조정해야 할 수 있습니다.
+//             const usernames = response.map(assignee => assignee.username);
+//             setAssignees(usernames);
+//         } catch (error) {
+//             console.error("Error fetching assignees:", error);
+//         }
+//     };
+
+//     fetchAssignees();
+// }, [projectId]); // projectId가 변경될 때마다 실행
 
     useEffect(() => {
         setSelectedStatus(status);
@@ -50,6 +66,7 @@ export default function EditStatus({ status, accountRole, projectId, issueId, as
             if (assign) assigneeData.assignee = assign;
             await patchIssue(projectId, issueId, { ...statusData, ...assigneeData });
             console.log("Status updated successfully!");
+            window.location.reload();
         } catch (error) {
             console.error("Error updating status:", error);
         }

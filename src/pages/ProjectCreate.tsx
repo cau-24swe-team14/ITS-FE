@@ -44,7 +44,7 @@ function ProjectCreate() {
       const data = await createProject(projectName, projectDescription, users);
 
       console.log("프로젝트 생성:", data.data);
-      const location = data.headers.location; // 수정된 부분
+      const location = data.headers.location; 
       nav(location);
     } catch (err) {
       console.error("" + err);

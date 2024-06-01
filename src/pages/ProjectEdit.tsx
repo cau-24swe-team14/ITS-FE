@@ -60,7 +60,6 @@ function ProjectUpdate() {
       const projectIdNumber = parseInt(projectId);
   
       const updatedMembers = [...users, ...newUsers];
-//: Partial<Issue>
       const updatedFields = {
         title: title !== originData.title ? title : originData.title,
         description: description !== originData.description ? description : originData.description,
@@ -69,17 +68,10 @@ function ProjectUpdate() {
   
       console.log("Updated Fields:", updatedFields);
   
-      // await updateProject(
-      //   projectIdNumber,
-      //   updatedFields.title || originData.title,
-      //   updatedFields.description || originData.description,
-      //   updatedFields.members || originData.members
-      // );
       await updateProject(projectIdNumber, updatedFields);
   
       console.log("프로젝트 업데이트:", projectId, updatedFields);
   
-      // 업데이트 후에는 새로 추가된 사용자들을 기존 사용자 목록에 추가하고, 새 사용자 목록을 초기화합니다.
       setUsers(updatedMembers);
       setNewUsers([]);
 

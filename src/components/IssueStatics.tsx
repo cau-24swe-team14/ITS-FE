@@ -10,7 +10,7 @@ export default function IssueStatics() {
     const [newData, setNewData] = useState<INewProps>({ daily: { data: [] }, monthly: { data: [] } });
     const [closedData, setClosedData] = useState<IClosedProps>({ daily: { data: [] }, monthly: { data: [] } });
     const [topData, setTopData] = useState<ITopProps>({ daily: { data: [] }, monthly: { data: [] } });
-    const [bestData, setBestData] = useState<IBestProps>({ weekly: { data: { PL: [], DEV: [], TESTER: [] } } });
+    const [bestData, setBestData] = useState<IBestProps>({ weekly: { data: { pl: { username: "", count: 0 }, dev: { username: "", count: 0 }, tester: { username: "", count: 0 } } } });
 
     useEffect(() => {
         async function fetchStaticsData() {
@@ -58,7 +58,7 @@ export default function IssueStatics() {
             return (
                 <div>
                     <h2>Daily Data</h2>
-                    {newData?.daily.data.map((item:any, index:number) => (
+                    {newData && newData.daily.data.map((item:any, index:number) => (
                         <li key={index}>{`날짜: ${item.date}, 개수: ${item.count}`}</li>
                     ))}
                 </div>
@@ -67,7 +67,7 @@ export default function IssueStatics() {
             return (
                 <div>
                     <h2>Monthly Data</h2>
-                    {newData?.monthly.data.map((item:any, index:number) => (
+                    {newData && newData.monthly.data.map((item:any, index:number) => (
                         <li key={index}>{`날짜: ${item.date}, 개수: ${item.count}`}</li>
                     ))}
                 </div>
@@ -76,7 +76,7 @@ export default function IssueStatics() {
             return (
                 <div>
                     <h2>Daily Data</h2>
-                    {closedData?.daily.data.map((item:any, index:number) => (
+                    {closedData && closedData.daily.data.map((item:any, index:number) => (
                         <li key={index}>{`날짜: ${item.date}, 개수: ${item.count}`}</li>
                     ))}
                 </div>
@@ -85,7 +85,7 @@ export default function IssueStatics() {
             return (
                 <div>
                     <h2>Monthly Data</h2>
-                    {closedData?.monthly.data.map((item:any, index:number) => (
+                    {closedData && closedData.monthly.data.map((item:any, index:number) => (
                         <li key={index}>{`날짜: ${item.date}, 개수: ${item.count}`}</li>
                     ))}
                 </div>
@@ -94,34 +94,40 @@ export default function IssueStatics() {
             return (
                 <div>
                     <h2>PL Data</h2>
-                    {bestData?.weekly.data.PL.map((item:any, index:number) => (
-                        <li key={index}>{`사용자: ${item.username}, 개수: ${item.count}`}</li>
-                    ))}
+                    {bestData && bestData.weekly && bestData.weekly.data && bestData.weekly.data.pl && (
+                        <ul>
+                            <li>{`사용자: ${bestData.weekly.data.pl.username}, 개수: ${bestData.weekly.data.pl.count}`}</li>
+                        </ul>
+                    )}
                 </div>
             );
           case 'Dev':
             return (
                 <div>
                     <h2>Dev Data</h2>
-                    {bestData?.weekly.data.DEV.map((item:any, index:number) => (
-                        <li key={index}>{`사용자: ${item.username}, 개수: ${item.count}`}</li>
-                    ))}
+                    {bestData && bestData.weekly && bestData.weekly.data && bestData.weekly.data.dev && (
+                        <ul>
+                            <li>{`사용자: ${bestData.weekly.data.dev.username}, 개수: ${bestData.weekly.data.dev.count}`}</li>
+                        </ul>
+                    )}
                 </div>
             );
           case 'Tester':
             return (
-                <div className="mx-[20px]">
+                <div>
                     <h2>Tester Data</h2>
-                    {bestData?.weekly.data.TESTER.map((item:any, index:number) => (
-                        <li key={index}>{`사용자: ${item.username}, 개수: ${item.count}`}</li>
-                    ))}
+                    {bestData && bestData.weekly && bestData.weekly.data && bestData.weekly.data.tester && (
+                        <ul>
+                            <li>{`사용자: ${bestData.weekly.data.tester.username}, 개수: ${bestData.weekly.data.tester.count}`}</li>
+                        </ul>
+                    )}
                 </div>
             );
           case 'TDaily':
             return (
                 <div>
                     <div>Daily Data</div>
-                    {topData?.daily.data.map((item:any, index:number) => (
+                    {topData && topData.daily.data.map((item:any, index:number) => (
                         <li key={index}>{`제목: ${item.title}, 개수: ${item.count}`}</li>
                     ))}
                 </div>
@@ -130,7 +136,7 @@ export default function IssueStatics() {
             return (
                 <div>
                     <h2>Daily Data</h2>
-                    {topData?.monthly.data.map((item:any, index:number) => (
+                    {topData && topData.monthly.data.map((item:any, index:number) => (
                         <li key={index}>{`제목: ${item.title}, 개수: ${item.count}`}</li>
                     ))}
                 </div>
