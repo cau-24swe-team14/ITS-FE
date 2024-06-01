@@ -5,7 +5,7 @@ import Ticket from "../components/Ticket.tsx";
 import Comment from "../components/Comment.tsx";
 import CommentList from "../components/CommentList.tsx";
 import EditStatus from "../components/EditStatus.tsx";
-import { getIssueDetail, postComment } from "../apis/apis.ts";
+import { getIssueDetail } from "../apis/apis.ts";
 
 interface IParams {
     projectId: string;
@@ -52,21 +52,8 @@ export default function IssueDetail() {
     // }
     
 
-    const handleCommentPosted = async (content: string) => {
-        if (projectId && issueId) {
-          try {
-            console.log(`Posting comment for projectId: ${projectId}, issueId: ${issueId}`);
-
-            await postComment(parseInt(projectId), parseInt(issueId), { content });
-            // Reload issue details including new comments
-            const updatedIssue = await getIssueDetail(parseInt(projectId), parseInt(issueId));
-            console.log('Updated issue data after posting comment:', updatedIssue);
-
-            setIssue(updatedIssue);
-          } catch (error) {
-            console.error('Failed to post comment:', error);
-          }
-        }
+    const handleCommentPosted = async () => {
+        loadIssue(); // 댓글이 게시되면 이슈 정보를 다시 불러옵니다.
     };
 
     return (
@@ -82,7 +69,7 @@ export default function IssueDetail() {
                         priority={issue.priority}
                         keyword={issue.keyword}
                     />
-                    <EditStatus accountRole={issue.accountRole} status={issue.status}/>
+                    <EditStatus assignee={issue.assginee} accountRole={issue.accountRole} status={issue.status} projectId={parseInt(projectId)} issueId={parseInt(issueId)}/>
                     <Comment 
                         projectId={parseInt(projectId)}
                         issueId={parseInt(issueId)}

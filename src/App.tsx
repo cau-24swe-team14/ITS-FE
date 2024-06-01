@@ -17,14 +17,14 @@ export default function App() {
       <Route path={`/`} element={<Home />} />
       <Route path={`/users/login`} element={<LoginForm />} />
       <Route path={`/users/signup`} element={<SignupForm />} />
-      <Route path={`/projects/:projectid/issues/:issueid`} element={<IssueDetail />} />
-      <Route path={`/projects/:projectid/issues/:issueid/issueedit`} element={<IssueEdit />} />
-      <Route path={`/projects/:projectid/issues/issuecreate`} element={<IssueCreate />} />
+      <Route path={`/projects/:projectId/issues/:issueId`} element={<IssueDetail />} />
+      <Route path={`/projects/:projectId/issues/:issueId/issueedit`} element={<IssueEdit />} />
+      <Route path={`/projects/:projectId/issues/issuecreate`} element={<IssueCreate />} />
       <Route path={`/issuestatics`} element={<IssueStatics />} />
       <Route path={`/projects`} element={<ProjectList />} />
       <Route path={`/projects/:projectId/update`} element={<ProjectEdit />} />
       <Route path={`/projects/create`} element={<ProjectCreate />} />
-      <Route path={`/projects/:projectid`} element={<IssueList />} />
+      <Route path={`/projects/:projectId`} element={<IssueList />} />
     </Routes>
   )
 }

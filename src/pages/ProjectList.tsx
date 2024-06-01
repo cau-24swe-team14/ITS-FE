@@ -75,8 +75,8 @@ const ProjectList: React.FC = () => {
     };
 
     //edit 버튼 누르면 edit 택스트 추가되도록(페이지 네비게이션)
-    const editProject = () => {
-        nav('/projects/:projectid/update');
+    const editProject = (id:number) => {
+        nav(`/projects/${id}/update`);
     };
 
     //검색 버튼을 눌렀을떄 수행
@@ -150,7 +150,7 @@ const ProjectList: React.FC = () => {
                     <td className = "status-container">
                         <text onClick={()=>nav(`/projects/`+project.id)}>{ProjectStatus[project.status]}</text>
                         {isAdmin && (
-                            <button className="edit-botton" onClick={editProject}>
+                            <button className="edit-botton" onClick={() => {editProject(project.id)}}>
                                 <img src={editIcon} alt="edit"/>
                             </button>
                         )}  

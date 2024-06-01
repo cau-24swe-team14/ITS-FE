@@ -24,10 +24,10 @@ export default function CommentList({ comments }: ICommentListProps) {
                 </div>
             ) : (
                 safeComments.map(comment => (
-                    <div>
+                    <div key={comment.id} >
                         <div className="flex flex-row mt-[27px]">
                             <img src={profile} alt="프로필" className="w-[60px] h-[60px] mx-[20px] flex items-center justify-center"></img>
-                        <div key={comment.id} className="flex flex-col">
+                        <div className="flex flex-col">
                             <div className="font-semibold text-[20px]"> {comment.username}</div>
                             <div>{comment.date}</div>
                         </div>

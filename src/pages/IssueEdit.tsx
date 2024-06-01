@@ -9,8 +9,6 @@ export default function IssueEdit() {
     const {projectId, issueId} = useParams<{projectId : any, issueId : any}>();
     const [issueData, setIssueData] = useState(null);
     const cardRef = useRef<ICardRef>(null);
-    // const projectId = 1;
-    // const issueId = 1;
 
     useEffect(() => {
         async function fetchIssueData() {

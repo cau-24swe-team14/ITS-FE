@@ -25,7 +25,7 @@ const Ticket: React.FC<ITicketProps> = ({ issueId, accountRole, title, descripti
                         src={editImage} 
                         alt="수정" 
                         className="mt-[33px] mr-[28px] w-[20px] h-[20px]" 
-                        onClick={() => navigate('/issueedit')} />
+                        onClick={() => navigate('issueedit')} />
                 )}
             </div>
             <div className="mx-[31px]">

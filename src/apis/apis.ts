@@ -20,6 +20,15 @@ const instance = axios.create({
   }
 });
 
+export const getUser = async (username: string) => {
+  try{
+    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/users/isExist?username=${username}`);
+    return response;
+  } catch (error) {
+    console.error('user not found:', error);
+  }
+}
+
 export const postSignup = async (username: string, password: string) => {
   try{
     const response = await instance.post(`${import.meta.env.VITE_BASE_URL}/users/signup`,{
@@ -72,27 +81,27 @@ const statusMapping = ["NEW", "ASSIGNED", "FIXED", "RESOLVED", "CLOSED", "REOPEN
 
 export const getIssueDetail = async (projectId:number, issueId:number) => {
   try{
-    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}`);
-    const data = response.data;
+    const data = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}`);
+
     console.log('Received issue data:', data); 
 
     const issue = {
-      accountRole: data.accountRole,
-      id: data.id,
-      projectId: data.projectId,
-      title: data.title,
-      description: data.description,
-      keyword: keywordMapping[data.keyword],
-      reporter: data.reporter,
-      reportedDate: data.reportedDate,
-      manager: data.manager,
-      assignee: data.assignee,
-      fixer: data.fixer,
-      priority: priorityMapping[data.priority],
-      status: statusMapping[data.status],
-      dueDate: data.dueDate,
-      closedDate: data.closedDate,
-      comment: data.comment 
+      accountRole: data.data.accountRole,
+      id: data.data.id,
+      projectId: data.data.projectId,
+      title: data.data.title,
+      description: data.data.description,
+      keyword: keywordMapping[data.data.keyword],
+      reporter: data.data.reporter,
+      reportedDate: data.data.reportedDate,
+      manager: data.data.manager,
+      assignee: data.data.assignee,
+      fixer: data.data.fixer,
+      priority: priorityMapping[data.data.priority],
+      status: statusMapping[data.data.status],
+      dueDate: data.data.dueDate,
+      closedDate: data.data.closedDate,
+      comment: data.data.comment 
     };
     return issue;
 
@@ -115,8 +124,8 @@ export const postComment = async (projectId: number, issueId: number, comment: {
 
 export const postIssue = async (projectId: number, issueData : any) => {
   try {
-    const postResponse = await instance.post(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues`, issueData);
-    return postResponse;
+    const response = await instance.post(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues`, issueData);
+    return response;
   } catch (error) {
     console.error('Error posting issue:', error);
     throw error;
@@ -223,7 +232,7 @@ export const createProject = async (name: string, description: string, users: Ar
       project,
     );
 
-    const data = response.data;
+    const data = response;
     console.log("Post new project data:", data);
 
     return data;

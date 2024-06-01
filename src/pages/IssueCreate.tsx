@@ -2,11 +2,13 @@ import { useRef, useState } from 'react';
 import Container from "../components/Container";
 import Card, { ICardRef } from "../components/Card";
 import { postIssue } from "../apis/apis";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+
 
 export default function IssueCreate() {
     const { projectId } = useParams<{projectId:string}>();
     const cardRef = useRef<ICardRef>(null);
+    const nav = useNavigate();
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -23,6 +25,7 @@ export default function IssueCreate() {
                 setFormData(issueData);
                 const response = await postIssue(parseInt(projectId), issueData);
                 console.log('Issue created successfully:', response);
+                nav(`${response.headers.location}`);
             } catch (error) {
                 console.error('Error creating issue:', error);
             }

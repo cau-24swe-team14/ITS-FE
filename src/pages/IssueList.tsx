@@ -20,7 +20,7 @@ const searchFilters = ['title', 'description', 'keyword', 'reporter', 'manager',
 
 const IssueList: React.FC = () => {
     //프로젝트 리스트에서 클릭한 것을 project 아이디를 토대로 가져온다
-    const {projectid} = useParams<{ projectid: string | undefined}>();
+    const {projectId} = useParams<{ projectId: string | undefined}>();
 
     const [searchTerm, setSearchTerm] = useState('');
     const [searchFilter, setSearchFilter] = useState('');
@@ -50,10 +50,11 @@ const IssueList: React.FC = () => {
     useEffect(() => {
         const loadIssues = async() => {
             try{
-                if(projectid!==undefined) {
+                if(projectId!==undefined) {
                     //서버에서 데이터 가져와서 저장
-                    const data = await getIssue(parseInt(projectid, 10));
+                    const data = await getIssue(parseInt(projectId, 10));
                     console.log(data.accountRole);
+                    console.log(data);
                     if(data.accountRole === 2){
                         checkTester(true)
                     }
@@ -77,8 +78,8 @@ const IssueList: React.FC = () => {
                     setIssues(data.issue)
 
                     //refresh 하면 첫 이슈부터 보여줌
-                    setIssueView(issues.slice(listNum*(currentPage-1), listNum*(currentPage)))
-                    setfilterView(issues)
+                    setIssueView(data.issue.slice(listNum*(currentPage-1), listNum*(currentPage)))
+                    setfilterView(data.issue)
                 }
             }catch(err){
                 console.error(""+err)
@@ -87,17 +88,17 @@ const IssueList: React.FC = () => {
     
         loadIssues();
         // 페이지 변경될때마다 마운트
-    }, [listNum]);
+    }, [listNum, projectId, currentPage]);
 
     useEffect(()=>{
         const search = async() => {
             try{
-                if(projectid!==undefined) {
+                if(projectId!==undefined) {
                     if(searchFilter==="" || searchTerm ===""){
                         return
                     }
                     //서버에서 데이터 가져와서 저장
-                    const data = await searchIssue(parseInt(projectid, 10), searchFilter, searchTerm);
+                    const data = await searchIssue(parseInt(projectId, 10), searchFilter, searchTerm);
                     setIssues(data)
                     //refresh 하면 첫 이슈부터 보여줌
                     setIssueView(issues.slice(listNum*(currentPage-1), listNum*(currentPage)))
@@ -112,11 +113,11 @@ const IssueList: React.FC = () => {
             search()
         }
         
-    }, [isSearch]);
+    }, [isSearch, projectId, searchFilter, searchTerm, listNum, currentPage]);
 
     // createIssue 페이지로 가도록 네비게이션
     const createIssue = () => {
-        nav(`/projects/${projectid}/issues/issuecreate`)
+        nav(`/projects/${projectId}/issues/issuecreate`)
     };
 
     //검색 버튼을 눌렀을떄 수행
@@ -246,7 +247,7 @@ const IssueList: React.FC = () => {
                 </thead>
                 <tbody>
                 {issueView.map(issue => (
-                    <tr key={issue.id} onClick={()=>nav(`/projects/${projectid}/issues/`+issue.id)}>
+                    <tr key={issue.id} onClick={()=>nav(`/projects/${projectId}/issues/`+issue.id)}>
                     <td>{issue.title}</td>
                     <td>{IssueStatue[issue.status]}</td>
                     <td>{issue.reportedDate}</td>
