@@ -12,7 +12,7 @@ export default function Comment({ projectId, issueId, onCommentPosted }: ICommen
 
     const handlePostComment = async () => {
         try {
-            await postComment(1, 1, { content });
+            await postComment(projectId, issueId, { content });
             onCommentPosted(content);
             setContent('');
         } catch (error) {

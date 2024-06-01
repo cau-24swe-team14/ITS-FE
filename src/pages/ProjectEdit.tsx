@@ -1,30 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Container from "../components/Container.tsx";
-import { updateProject } from "../apis/apis.ts";
+import { updateProject, getProjectMembers } from "../apis/apis.ts";
 
 function ProjectUpdate() {
-  const { projectId } = useParams<{ projectId: any }>();
+  const { projectId } = useParams<{ projectId: string | undefined }>();
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
-  const [username, setUsername] = useState("");
-  const [role, setRole] = useState("");
+  // const [username, setUsername] = useState("");
+  // const [role, setRole] = useState("");
   const [searchUsername, setSearchUsername] = useState("");
   const [searchRole, setSearchRole] = useState("");
-  const [users, setUsers] = useState([
-    { username: "PL1", role: "PL" },
-    { username: "PL2", role: "PL" },
-    { username: "Dev1", role: "Dev" },
-    { username: "Dev2", role: "Dev" },
-  ]);
+  const [users, setUsers] = useState<{ username: string, role: string }[]>([]);
+
+  useEffect(() => {
+    const loadProjectMembers = async () => {
+      if (!projectId) {
+        console.error("Invalid project ID");
+        return;
+      }
+      try {
+        const members = await getProjectMembers(parseInt(projectId));
+        setUsers(members || []);
+      } catch (err) {
+        console.error("Failed to fetch project members" + err);
+      }
+    
+    };
+    
+    loadProjectMembers();
+  }, [projectId]);
 
   const handleUpdateProject = async () => {
+    if (projectId) {
     try {
-      await updateProject(projectId, projectName, projectDescription);
+      await updateProject(parseInt(projectId), projectName, projectDescription);
       console.log("프로젝트 업데이트:", projectId);
     } catch (err) {
       console.error("" + err);
     }
+  }
   };
 
   const filteredUsers = users.filter((user) => {
@@ -35,19 +50,19 @@ function ProjectUpdate() {
     );
   });
 
-  const addUser = () => {
-    if (username && role) {
-      setUsers([
-        ...users,
-        {
-          username: username,
-          role: role,
-        },
-      ]);
-      setUsername("");
-      setRole("");
-    }
-  };
+  // const addUser = () => {
+  //   if (username && role) {
+  //     setUsers([
+  //       ...users,
+  //       {
+  //         username: username,
+  //         role: role,
+  //       },
+  //     ]);
+  //     setUsername("");
+  //     setRole("");
+  //   }
+  // };
 
   return (
     <Container>
@@ -110,7 +125,7 @@ function ProjectUpdate() {
                     </div>
                     <button
                           className="w-[100px] h-[39px] hover:bg-[#D9D9D9] hover:text-black bg-black text-white rounded-[5px] font-semibold text-[15px]"
-                          onClick={ addUser }>Add
+                          >Add
                         </button>
                 </div>
                 <table className="mx-[50px] mb-[30px]">

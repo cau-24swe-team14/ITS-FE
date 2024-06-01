@@ -184,6 +184,20 @@ export const getIssue = async (projectId:number) => {
   }
 };
 
+export const getProjectMembers = async (projectId: number) => {
+  try {
+    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}`);
+    const data = response.data;
+    
+    const members = data.member;
+    return members;
+
+  } catch (error) {
+    console.error('Failed to fetch project members:', error);
+    throw error;
+  }
+};
+
 export const searchIssue = async (projectId:number, key:string, value:string) => {
   try{
     const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues?${key}=${value}`);
@@ -220,7 +234,7 @@ export const createProject = async (name: string, description: string, users: Ar
 };
 
 export const updateProject = async (
-  projectId: string,
+  projectId: number,
   name: string,
   description: string,
 ) => {

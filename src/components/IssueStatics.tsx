@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react"
 import { getIssueStatics } from "../apis/apis";
 import { INewProps, IClosedProps, ITopProps, IBestProps } from "./IStatics";
+import { useParams } from "react-router-dom";
 
 export default function IssueStatics() {
+    const { projectId } = useParams<{projectId : any}>();
     const [selectedItem, setSelectedItem] = useState('');
     const [staticsData, setStaticsData] = useState<any>(null);
     const [newData, setNewData] = useState<INewProps>({ daily: { data: [] }, monthly: { data: [] } });
@@ -13,7 +15,8 @@ export default function IssueStatics() {
     useEffect(() => {
         async function fetchStaticsData() {
             try {
-                const projectId = 1;
+                if (!projectId) throw new Error('projectId is undefined');
+                // const projectId = 1;
                 let value = '';
                 if (selectedItem === 'IDaily' || selectedItem === 'IMonthly') {
                     value = 'new-issue';

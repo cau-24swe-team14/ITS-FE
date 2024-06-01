@@ -2,8 +2,10 @@ import { useRef, useState } from 'react';
 import Container from "../components/Container";
 import Card, { ICardRef } from "../components/Card";
 import { postIssue } from "../apis/apis";
+import { useParams } from 'react-router-dom';
 
 export default function IssueCreate() {
+    const { projectId } = useParams<{projectId:string}>();
     const cardRef = useRef<ICardRef>(null);
     const [formData, setFormData] = useState({
         title: '',
@@ -16,9 +18,10 @@ export default function IssueCreate() {
     const handleCreateIssue = async () => {
         if (cardRef.current) {
             const issueData = cardRef.current.getFormData();
+            if (!projectId) throw new Error('projectId is undefined');
             try {
                 setFormData(issueData);
-                const response = await postIssue(1, issueData);
+                const response = await postIssue(parseInt(projectId), issueData);
                 console.log('Issue created successfully:', response);
             } catch (error) {
                 console.error('Error creating issue:', error);
