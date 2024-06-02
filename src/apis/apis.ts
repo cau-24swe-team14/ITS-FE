@@ -24,8 +24,11 @@ export const getUser = async (username: string) => {
   try{
     const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/users/isExist?username=${username}`);
     return response;
-  } catch (error) {
+  } catch (error: any) {
     console.error('user not found:', error);
+    if (error.response) {
+      alert(`${error.response.data}`);
+    }
   }
 }
 
@@ -36,8 +39,11 @@ export const postSignup = async (username: string, password: string) => {
       password,
     });
     return response.status;
-  } catch (error) {
+  } catch (error:any) {
     console.error('faile to signup:', error);
+    if (error.response) {
+      alert(`${error.response.data}`);
+    }
     throw error;
   }
 }
@@ -49,8 +55,11 @@ export const postLogin = async (username:string, password:string) => {
       password,
     });
     return response.status;
-  } catch (error) {
+  } catch (error:any) {
     console.error('Failed to login:', error);
+    if (error.response) {
+      alert(`${error.response.data}`);
+    }
     throw error;
   }
 }
@@ -59,8 +68,11 @@ export const postLogout = async () => {
   try {
     const response = await instance.post(`${import.meta.env.VITE_BASE_URL}/users/logout`, {});
     return response.status;
-  } catch (error) {
+  } catch (error:any) {
     console.error('Failed to logout:', error);
+    if (error.response) {
+      alert(`${error.response.data}`);
+    }
     throw error;
   }
 }
@@ -69,8 +81,11 @@ export const getIssueStatics = async (projectId: number, value: string) => {
   try {
     const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/trend?category=${value}`);
     return response.data;
-  } catch(error) {
+  } catch(error:any) {
     console.error('Failed to fetch statics:', error);
+    if (error.response) {
+      alert(`${error.response.data}`);
+    }
     throw error;
   }
 };
@@ -105,8 +120,11 @@ export const getIssueDetail = async (projectId:number, issueId:number) => {
     };
     return issue;
 
-  } catch (error) {
+  } catch (error:any) {
     console.error('Failed to fetch issue:', error);
+    if (error.response) {
+      alert(`${error.response.data}`);
+    }
     throw error;
   }
 };
@@ -115,8 +133,11 @@ export const postComment = async (projectId: number, issueId: number, comment: {
   try {
     const response = await instance.post(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}/comments`, comment);
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     console.error('Error posting issue:', error);
+    if (error.response) {
+      alert(`${error.response.data}`);
+    }
     throw error;
   }
   
@@ -126,8 +147,11 @@ export const postIssue = async (projectId: number, issueData : any) => {
   try {
     const response = await instance.post(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues`, issueData);
     return response;
-  } catch (error) {
+  } catch (error:any) {
     console.error('Error posting issue:', error);
+    if (error.response) {
+      alert(`${error.response.data}`);
+    }
     throw error;
   }
 };
@@ -136,8 +160,11 @@ export const fetchIssue = async (projectId: number, issueId: number) => {
   try {
     const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}`);
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     console.error('Error fetching issue data:', error);
+    if (error.response) {
+      alert(`${error.response.data}`);
+    }
     throw error;
   }
 };
@@ -146,8 +173,11 @@ export const patchIssue = async (projectId: number, issueId: number, issueData :
   try {
     const patchResponse = await instance.patch(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}`, issueData);
     return patchResponse;
-  } catch (error) {
+  } catch (error:any) {
     console.error('Error patching issue:', error);
+    if (error.response) {
+      alert(`${error.response.data}`);
+    }
     throw error;
   }
 };
@@ -164,8 +194,11 @@ export const getProject = async () => {
     };
     return projects;
 
-  } catch (error) {
+  } catch (error:any) {
     console.error('Failed to fetch projects:', error);
+    if (error.response) {
+      alert(`${error.response.data}`);
+    }
     throw error;
   }
 };
@@ -187,8 +220,11 @@ export const getIssue = async (projectId:number) => {
     };
     return projects;
 
-  } catch (error) {
+  } catch (error:any) {
     console.error('Failed to fetch issues:', error);
+    if (error.response) {
+      alert(`${error.response.data}`);
+    }
     throw error;
   }
 };
@@ -201,8 +237,11 @@ export const getProjectMembers = async (projectId: number) => {
     const members = data.member;
     return members;
 
-  } catch (error) {
+  } catch (error:any) {
     console.error('Failed to fetch project members:', error);
+    if (error.response) {
+      alert(`${error.response.data}`);
+    }
     throw error;
   }
 };
@@ -213,8 +252,11 @@ export const searchIssue = async (projectId:number, key:string, value:string) =>
     const data = response.data;
     return data;
 
-  } catch (error) {
+  } catch (error:any) {
     console.error('Failed to search issues:', error);
+    if (error.response) {
+      alert(`${error.response.data}`);
+    }
     throw error;
   }
 };
@@ -236,8 +278,11 @@ export const createProject = async (name: string, description: string, users: Ar
     console.log("Post new project data:", data);
 
     return data;
-  } catch (error) {
+  } catch (error:any) {
     console.error("Failed to fetch projects:", error);
+    if (error.response) {
+      alert(`${error.response.data}`);
+    }
     throw error;
   }
 };
@@ -248,8 +293,11 @@ export const updateProject = async (projectId: number, projectData: { title: str
 
     console.log("Patch new project data:", projectId);
     return;
-  } catch (error) {
+  } catch (error:any) {
     console.error("Failed to update projects:", error);
+    if (error.response) {
+      alert(`${error.response.data}`);
+    }
     throw error;
   }
 };
@@ -259,8 +307,11 @@ export const getAssinee = async (projectId: number, issueId: number) => {
     const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}/assignee-suggestions`);
     const data = response.data;
     return data;
-  } catch (error) {
+  } catch (error:any) {
     console.error("Failed to get Assginee: ", error);
+    if (error.response) {
+      alert(`${error.response.data}`);
+    }
     throw error;
   }
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { getIssueStatics } from "../apis/apis";
 import { INewProps, IClosedProps, ITopProps, IBestProps } from "./IStatics";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function IssueStatics() {
     const { projectId } = useParams<{projectId : any}>();
@@ -11,12 +11,13 @@ export default function IssueStatics() {
     const [closedData, setClosedData] = useState<IClosedProps>({ daily: { data: [] }, monthly: { data: [] } });
     const [topData, setTopData] = useState<ITopProps>({ daily: { data: [] }, monthly: { data: [] } });
     const [bestData, setBestData] = useState<IBestProps>({ weekly: { data: { pl: { username: "", count: 0 }, dev: { username: "", count: 0 }, tester: { username: "", count: 0 } } } });
+    const nav = useNavigate();
 
     useEffect(() => {
         async function fetchStaticsData() {
             try {
                 if (!projectId) throw new Error('projectId is undefined');
-                // const projectId = 1;
+
                 let value = '';
                 if (selectedItem === 'IDaily' || selectedItem === 'IMonthly') {
                     value = 'new-issue';
@@ -50,99 +51,111 @@ export default function IssueStatics() {
     }, [selectedItem]);
 
     const getContentForSelectedItem = () => {
-        if(!staticsData) return '데이터가 없습니다.';
         console.log(newData.daily.data);
         
         switch (selectedItem) {
           case 'IDaily':
             return (
                 <div>
-                    <h2>Daily Data</h2>
+                    <p className="mx-[15px] my-[15px] font-semibold">Daily Data</p>
                     {newData && newData.daily.data.map((item:any, index:number) => (
-                        <li key={index}>{`날짜: ${item.date}, 개수: ${item.count}`}</li>
+                        <p className="mx-[20px] my-[10px] text-[18px]" key={index}>{`날짜: ${item.date}, new issue 개수: ${item.count}`}
+                        {index !== newData.daily.data.length - 1 && <hr className="my-[10px]"/>}
+                        </p>
                     ))}
                 </div>
             );
           case 'IMonthly':
             return (
                 <div>
-                    <h2>Monthly Data</h2>
+                    <p className="mx-[15px] my-[15px] font-semibold">Monthly Data</p>
                     {newData && newData.monthly.data.map((item:any, index:number) => (
-                        <li key={index}>{`날짜: ${item.date}, 개수: ${item.count}`}</li>
+                        <p className="mx-[20px] my-[10px] text-[18px]" key={index}>{`날짜: ${item.date}, new issue 개수: ${item.count}`}
+                        {index !== newData.monthly.data.length - 1 && <hr className="my-[10px]"/>}
+                        </p>                    
                     ))}
                 </div>
             );
           case 'CDaily':
             return (
                 <div>
-                    <h2>Daily Data</h2>
+                    <p className="mx-[15px] my-[15px] font-semibold">Daily Data</p>
                     {closedData && closedData.daily.data.map((item:any, index:number) => (
-                        <li key={index}>{`날짜: ${item.date}, 개수: ${item.count}`}</li>
+                        <p className="mx-[20px] my-[10px] text-[18px]" key={index}>{`날짜: ${item.date}, closed issue 개수: ${item.count}`}
+                        {index !== closedData.daily.data.length - 1 && <hr className="my-[10px]"/>}
+                        </p>
                     ))}
                 </div>
             );
           case 'CMonthly':
             return (
                 <div>
-                    <h2>Monthly Data</h2>
+                    <p className="mx-[15px] my-[15px] font-semibold">Monthly Data</p>
                     {closedData && closedData.monthly.data.map((item:any, index:number) => (
-                        <li key={index}>{`날짜: ${item.date}, 개수: ${item.count}`}</li>
+                        <p className="mx-[20px] my-[10px] text-[18px]" key={index}>{`날짜: ${item.date}, closed issue 개수: ${item.count}`}
+                        {index !== closedData.monthly.data.length - 1 && <hr className="my-[10px]"/>}
+                        </p>
                     ))}
                 </div>
             );
           case 'PL':
             return (
                 <div>
-                    <h2>PL Data</h2>
+                    <p className="mx-[15px] my-[15px] font-semibold">PL Data</p>
                     {bestData && bestData.weekly && bestData.weekly.data && bestData.weekly.data.pl && (
-                        <ul>
-                            <li>{`사용자: ${bestData.weekly.data.pl.username}, 개수: ${bestData.weekly.data.pl.count}`}</li>
-                        </ul>
+                        <p className="mx-[20px] my-[10px] text-[18px]">{`사용자: ${bestData.weekly.data.pl.username}, manager로 등록된 issue 개수: ${bestData.weekly.data.pl.count}`}</p>
                     )}
                 </div>
             );
           case 'Dev':
             return (
                 <div>
-                    <h2>Dev Data</h2>
+                    <p className="mx-[15px] my-[15px] font-semibold">Dev Data</p>
                     {bestData && bestData.weekly && bestData.weekly.data && bestData.weekly.data.dev && (
-                        <ul>
-                            <li>{`사용자: ${bestData.weekly.data.dev.username}, 개수: ${bestData.weekly.data.dev.count}`}</li>
-                        </ul>
+                        <p className="mx-[20px] my-[10px] text-[18px]">{`사용자: ${bestData.weekly.data.dev.username}, assignee로 등록된 issue 개수: ${bestData.weekly.data.dev.count}`}</p>
                     )}
                 </div>
             );
           case 'Tester':
             return (
                 <div>
-                    <h2>Tester Data</h2>
+                    <p className="mx-[15px] my-[15px] font-semibold">Tester Data</p>
                     {bestData && bestData.weekly && bestData.weekly.data && bestData.weekly.data.tester && (
-                        <ul>
-                            <li>{`사용자: ${bestData.weekly.data.tester.username}, 개수: ${bestData.weekly.data.tester.count}`}</li>
-                        </ul>
+                        <p className="mx-[20px] my-[10px] text-[18px]">{`사용자: ${bestData.weekly.data.tester.username}, reporter로 등록된 issue 개수: ${bestData.weekly.data.tester.count}`}</p>
+
                     )}
                 </div>
             );
           case 'TDaily':
             return (
                 <div>
-                    <div>Daily Data</div>
+                    <p className="mx-[15px] my-[15px] font-semibold">Daily Data</p>
                     {topData && topData.daily.data.map((item:any, index:number) => (
-                        <li key={index}>{`제목: ${item.title}, 개수: ${item.count}`}</li>
+                        <p className="mx-[20px] my-[10px] text-[18px]" key={index}>{`제목: ${item.title}, comment 개수: ${item.count}`}
+                        <a href={`/projects/${projectId}/issues/${item.issueId}`} className="mx-[20px] my-[10px] text-black hover:text-gray-500">View Issue</a>
+                        {index !== topData.daily.data.length - 1 && <hr className="my-[10px]"/>}
+                        </p>
                     ))}
                 </div>
             );
           case 'TMonthly':
             return (
                 <div>
-                    <h2>Daily Data</h2>
+                    <p className="mx-[15px] my-[15px] font-semibold">Daily Data</p>
                     {topData && topData.monthly.data.map((item:any, index:number) => (
-                        <li key={index}>{`제목: ${item.title}, 개수: ${item.count}`}</li>
+                        <p className="mx-[20px] my-[10px] text-[18px]" key={index}>{`제목: ${item.title}, comment 개수: ${item.count}`}
+                        <a href={`/projects/${projectId}/issues/${item.issueId}`} className="mx-[20px] my-[10px] text-black hover:text-gray-500">View Issue</a>
+                        {index !== topData.monthly.data.length - 1 && <hr className="my-[10px]"/>}
+                        </p>
                     ))}
                 </div>
             );
           default:
-            return '선택된 항목이 없습니다.';
+            return (
+                <div className="mx-[15px] my-[15px] text-[18px]">
+                    선택된 항목이 없습니다.
+                </div>
+            );
         }
       };
 
@@ -168,23 +181,23 @@ export default function IssueStatics() {
 
     return(
         <div className="flex flex-row">
-            <div className="bg-[#D9D9D9] w-[200px] h-fit mr-[15px] flex flex-col p-[16px]">
+            <div className="bg-[#D9D9D9] w-[200px] h-fit mr-[15px] rounded-[5px] flex flex-col p-[16px]">
                 {/* Issue Count Section */}
-                <div className="font-semibold mb-[8px] cursor-default">Issue Count</div>
+                <div className="font-bold mb-[8px] cursor-default">Issue Count</div>
                 <div className="ml-[8px] mb-[16px] cursor-pointer">
                     <div onClick={() => setSelectedItem('IDaily')}>Daily</div>
                     <div onClick={() => setSelectedItem('IMonthly')}>Monthly</div>
                 </div>
                 
                 {/* Closed Issue Section */}
-                <div className="font-semibold mb-[8px] cursor-default">Closed Issue</div>
+                <div className="font-bold mb-[8px] cursor-default">Closed Issue</div>
                 <div className="ml-[8px] mb-[16px] cursor-pointer">
                     <div onClick={() => setSelectedItem('CDaily')}>Daily</div>
                     <div onClick={() => setSelectedItem('CMonthly')}>Monthly</div>
                 </div>
                 
                 {/* Best Section */}
-                <div className="font-semibold mb-[8px] cursor-default">Best</div>
+                <div className="font-bold mb-[8px] cursor-default">Best</div>
                 <div className="ml-[8px] mb-[16px] cursor-pointer">
                     <div onClick={() => setSelectedItem('PL')}>PL</div>
                     <div onClick={() => setSelectedItem('Dev')}>Dev</div>
@@ -192,17 +205,17 @@ export default function IssueStatics() {
                 </div>
                 
                 {/* Top 3 Issue Section */}
-                <div className="font-semibold mb-[8px] cursor-default">Top3 Issue</div>
+                <div className="font-bold mb-[8px] cursor-default">Top3 Issue</div>
                 <div className="ml-[8px] cursor-pointer">
                     <div onClick={() => setSelectedItem('TDaily')}>Daily</div>
                     <div onClick={() => setSelectedItem('TMonthly')}>Monthly</div>
                 </div>
             </div>
-            <div className="w-[1026px] h-[617px] border border-black">
-                <div className="flex items-center bg-[#F9F9F9] w-full h-[44px] border-b border-black px-[26px] mb-[16px]">
+            <div className="w-[1026px] h-[617px] border border-black rounded-[5px]">
+                <div className="flex items-center bg-[#F9F9F9] w-full h-[44px] border-b border-black px-[26px]">
                     <span className="font-semibold text-[16px]">{getTitle()}</span>
                 </div>
-                    <span className="m-[16px]">{getContentForSelectedItem()}</span>
+                    <span className="text-[20px]">{getContentForSelectedItem()}</span>
             </div>
 
         </div>

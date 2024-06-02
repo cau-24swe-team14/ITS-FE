@@ -21,15 +21,11 @@ const LoginForm = () => {
         setError("로그인 성공");
         setLoggedInUser(username);
         nav('/projects');
-        // onLogin(username, password);
-        // 로그인 성공 처리
       } else {
-        setError(""+login_data);
         
       }
     } catch (error) {
       console.error('Error:', error);
-      setError(""+error);
     }
   };
 

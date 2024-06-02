@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { postLogout } from "../apis/apis";
@@ -9,9 +8,8 @@ import { postLogout } from "../apis/apis";
 export default function NavBar() {
   // 나중에 로그인 정보 받아와서 띄우기
   const { loggedInUser, setLoggedInUser } = useAuth();
-  // const user = 'dev1';
   const nav = useNavigate();
-  
+
   const onMove = (event: React.MouseEvent<HTMLDivElement>) => {
     let destination = event.currentTarget.id.toLowerCase();
     nav(
@@ -54,7 +52,7 @@ export default function NavBar() {
         <div className="flex-grow"/>
         <div className="flex flex-row justify-between items-center">
           {/* Navigation */}
-          {loggedInUser && <p className="text-[15px] underline">logged in as {loggedInUser}</p>}
+          <p className="text-[15px] underline">logged in as {loggedInUser}</p>
           {/* <p className="text-[15px]underline"> logged in as {user} </p> */}
           <div
             onClick={handleLogout}

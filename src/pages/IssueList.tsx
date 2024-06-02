@@ -24,7 +24,7 @@ const IssueList: React.FC = () => {
     const {projectId} = useParams<{ projectId: string | undefined}>();
 
     const [searchTerm, setSearchTerm] = useState('');
-    const [searchFilter, setSearchFilter] = useState('');
+    const [searchFilter, setSearchFilter] = useState('title');
     const [currentPage, handlePageChange] = useState(1);
     const [listNum, setlistNum] = useState(5);
     const [isSearch, clickSearch] = useState(false);
@@ -110,9 +110,15 @@ const IssueList: React.FC = () => {
                         return
                     }
                     const data = await searchIssue(parseInt(projectId, 10), searchFilter, searchTerm);
-                    setIssues(data)
-                    setIssueView(issues.slice(listNum*(currentPage-1), listNum*(currentPage)))
-                    setfilterView(issues)
+                    handlePageChange(1)
+                    setfilterView(data)
+                    setIssueView(data.slice(listNum*0, listNum*1))
+                }else{
+                    if(searchTerm ===""){
+                        handlePageChange(1)
+                        setfilterView(issues)
+                        setIssueView(issues.slice(listNum*0, listNum*1))
+                    }
                 }
             }catch(err){
                 console.error(""+err)
@@ -123,7 +129,7 @@ const IssueList: React.FC = () => {
             search()
         }
         
-    }, [isSearch, projectId, searchFilter, searchTerm, listNum, currentPage]);
+    }, [isSearch]);
 
     const createIssue = () => {
         nav(`/projects/${projectId}/issues/issuecreate`)
@@ -192,8 +198,7 @@ const IssueList: React.FC = () => {
                                 marginLeft: '30px',
                                 backgroundColor: 'white', 
                                 position: 'absolute', 
-                                top: '180px', 
-                                // left: '300px',
+                                top: '200px', 
                                 zIndex: 10
                               }}>
                                 <p><strong>Project Status:{projectStatus}</strong></p>

@@ -1,6 +1,4 @@
 import { Route, Routes } from 'react-router-dom';
-import { ReactNode } from 'react';
-import Home from './pages/Home.tsx';
 import IssueDetail from './pages/IssueDetail.tsx';
 import IssueEdit from './pages/IssueEdit.tsx';
 import IssueCreate from './pages/IssueCreate.tsx';
@@ -17,7 +15,7 @@ export default function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path={`/`} element={<Home />} />
+        <Route path={`/`} element={<LoginForm />} />
         <Route path={`/users/login`} element={<LoginForm />} />
         <Route path={`/users/signup`} element={<SignupForm />} />
         <Route path={`/projects/:projectId/issues/:issueId`} element={<IssueDetail />} />

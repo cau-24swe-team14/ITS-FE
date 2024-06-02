@@ -13,7 +13,7 @@ export default function Container({ children }:IContainerProps) {
   return (
     <div className="flex flex-col relative">
       <NavBar />
-      <div className="bg-white flex items-center justify-center">
+      <div className="bg-white flex items-center justify-center my-[20px]">
         {/* BODY */}
         {children}
       </div>

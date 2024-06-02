@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Container from "../components/Container.tsx";
 import "../css/list.css";
 import editIcon from "../assets/edit.png"
-import serchIcon from "../assets/search.png"
 import { useNavigate } from "react-router-dom";
 import { getProject } from "../apis/apis.ts"
 
@@ -15,7 +14,6 @@ interface Project {
 const ProjectStatus = ['Not Started', 'In Progress', 'Done']
 
 const ProjectList: React.FC = () => {
-    const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, handlePageChange] = useState(1);
     const [listNum, setlistNum] = useState(5);
     const [isAdmin, setIsAdmin] = useState();
@@ -29,12 +27,9 @@ const ProjectList: React.FC = () => {
         const loadprojects = async() => {
             try{
                 const data = await getProject();
-                // admin 계정 확인
                 setIsAdmin(data.isAdmin);
-                console.log(data.isAdmin);
                 setProjects(data.project);
                 setfilterView(data.project);
-                //refresh 하면 첫 프로젝트부터 보여줌
                 setProjectView(data.project.slice(0, listNum));
                 console.log(projects)
             }catch(err){
@@ -43,32 +38,12 @@ const ProjectList: React.FC = () => {
         }
     
         loadprojects();
-        // 페이지 변경될때마다 마운트
     }, [listNum]);
 
     useEffect(() => {
         setProjectView(filterView.slice((currentPage - 1) * listNum, currentPage * listNum));
     }, [currentPage, filterView, listNum]);
     
-    //어드민 계정 활성화/비활성화
-    // const isAdmin = projects.isAdmin === 1? true:false;
-    //const isAdmin = 1//project_list.isAdmin===1?true:false;
-    // const projects = project_list.project
-
-    //프로젝트가 어떻게 나오는지 예시
-    /*
-    const [projects, setProjects] = useState<Project[]>([
-        { id: 1, title: 'Project Alpha', status: 0 },
-        { id: 2, title: 'Project Beta', status: 1 },
-        { id: 3, title: 'Project Gamma', status: 1 },
-        { id: 4, title: 'Project Gamma', status: 1 },
-        { id: 5, title: 'Project Gamma', status: 2 },
-        { id: 6, title: 'Project Gamma', status: 2 },
-        { id: 7, title: 'Project Gamma', status: 0 },
-    ]);
-    */
-
-
     //누르면 프로젝트 추가 되도록(페이지 네비게이션)
     const createProject = () => {
         nav('/projects/create');
@@ -79,23 +54,10 @@ const ProjectList: React.FC = () => {
         nav(`/projects/${id}/update`);
     };
 
-    //검색 버튼을 눌렀을떄 수행
-    const handleSearch = () => {
-        // 검색 로직 추가
-        console.log(`Searching for: ${searchTerm}`);
-        // 실제 검색 로직을 여기서 수행
-    };
-
-    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(e.target.value);
-    };
-
     //화면상에 보이는 project 숫자
     const listSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setlistNum(Number(e.target.value));
         handlePageChange(1);
-        // useEffect로 뺌
-        // setProjectView(filterView.slice(Number(e.target.value)*0, Number(e.target.value)*1))
     };
 
     //필터 적용
@@ -104,11 +66,9 @@ const ProjectList: React.FC = () => {
         const status = Number(e.target.value)
         if(status>-1){
             const filter_result = projects.filter((projects)=>projects.status == status)
-            // setProjectView(filter_result.slice(listNum*0, listNum*1))
             setfilterView(filter_result)
         }else{
             setfilterView(projects)
-            // setProjectView(projects.slice(listNum*0, listNum*1))
         }
     };
 
