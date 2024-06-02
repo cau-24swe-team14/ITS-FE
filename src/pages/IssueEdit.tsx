@@ -3,10 +3,20 @@ import Container from "../components/Container";
 import Card, { ICardRef } from "../components/Card";
 import { patchIssue, fetchIssue } from "../apis/apis";
 import { useNavigate, useParams } from 'react-router-dom';
+import _ from "lodash";
+
+type IssueData = {
+    title: string;
+    description: string;
+    priority: number;
+    keyword: number;
+    dueDate: string;
+    [key: string]: any; // 인덱스 시그니처 추가
+};
 
 export default function IssueEdit() {
     const {projectId, issueId} = useParams<{projectId : any, issueId : any}>();
-    const [issueData, setIssueData] = useState(null);
+    const [issueData, setIssueData] = useState<IssueData | null>(null);
     const cardRef = useRef<ICardRef>(null);
     const nav = useNavigate();
 
@@ -27,25 +37,24 @@ export default function IssueEdit() {
         fetchIssueData();
     }, [projectId, issueId]);
 
-    function isEqual(obj1:any, obj2:any) {
-        const jsonString1 = JSON.stringify(obj1);
-        const jsonString2 = JSON.stringify(obj2);
-        return jsonString1 === jsonString2;
-    }
-
-
     const handleSave = async () => {
         if (!projectId || !issueId) {
             console.error('projectId or issueId is undefined');
             return;
         }
         if (cardRef.current) {
-            const formData = cardRef.current.getFormData();
-            console.dir("formdata", JSON.stringify(formData));
-            const isChanged = !isEqual(formData, issueData); // Check if form data is changed
+            const formData = cardRef.current.getFormData() as IssueData;
+            const isChanged = !_.isEqual(formData, issueData);
+
             if (isChanged) {
+                const changedFields: Partial<IssueData> = {};
+                for (const key in formData) {
+                    if (formData.hasOwnProperty(key) && !_.isEqual(formData[key as keyof IssueData], issueData![key as keyof IssueData])) {
+                        changedFields[key] = formData[key as keyof IssueData];
+                    }
+                }
                 try {
-                    await patchIssue(projectId, issueId, formData);
+                    await patchIssue(projectId, issueId, changedFields);
                     nav(`/projects/${projectId}/issues/${issueId}`)
                 } catch (error) {
                     console.error('이슈 업데이트 실패:', error);

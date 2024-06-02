@@ -256,7 +256,8 @@ export const updateProject = async (projectId: number, projectData: { title: str
 
 export const getAssinee = async (projectId: number, issueId: number) => {
   try {
-    const data = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}/assignee-suggestions`);
+    const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/projects/${projectId}/issues/${issueId}/assignee-suggestions`);
+    const data = response.data;
     return data;
   } catch (error) {
     console.error("Failed to get Assginee: ", error);

@@ -63,19 +63,30 @@ const IssueList: React.FC = () => {
                     setDescription(data.projectDescription)
                     setDate(data.projectDate)
                     setStatus(data.projectStatus)
+
+                    let pl = ""
+                    let dev = ""
+                    let tester = ""
                     for(let i=0;i<data.projectMember.length;i++){
                         switch(data.projectMember[i].role){
                             case 0:
-                                setPL(projectPL+data.projectMember[i].username)
+                                pl += data.projectMember[i].username + ", "
                                 break
                             case 1:
-                                setDEV(projectDEV+data.projectMember[i].username)
+                                dev += data.projectMember[i].username + ", "
                                 break
                             case 2:
-                                setTESTER(projectTESTER+data.projectMember[i].username)
+                                tester += data.projectMember[i].username + ", "
                                 break
                         }
                     }
+                    pl = pl.slice(0,-2)
+                    dev = dev.slice(0,-2)
+                    tester = tester.slice(0,-2)
+
+                    setDEV(dev)
+                    setPL(pl)
+                    setTESTER(tester)
                     setIssues(data.issue)
 
                     //refresh 하면 첫 이슈부터 보여줌
@@ -166,21 +177,23 @@ const IssueList: React.FC = () => {
     return (
         <Container>
             <div>
-                <h2 className='main-title'>
+                <h2 className='flex flex-row items-center main-title'>
                     Issue 
+                    <div className="flex flex-col">
                         <label className='sub-title' onClick={()=>onviewProjectInfo(!viewProjectInfo)}>
                             / {projectTitle}
                         </label>
-                        {viewProjectInfo && (
+                        {viewProjectInfo===true && (
                             <div className = 'project-info' style={{ 
                                 border: '1px solid #ccc', 
                                 padding: '10px', 
                                 borderRadius: '5px', 
                                 marginTop: '10px', 
+                                marginLeft: '30px',
                                 backgroundColor: 'white', 
                                 position: 'absolute', 
                                 top: '180px', 
-                                left: '250px',
+                                // left: '300px',
                                 zIndex: 10
                               }}>
                                 <p><strong>Project Status:{projectStatus}</strong></p>
@@ -192,6 +205,7 @@ const IssueList: React.FC = () => {
                                 <p><strong>Description:</strong> {projectDescription}</p>
                           </div>
                         )}
+                        </div>
                 </h2>
                 <div className='search-bar'>
                     <div className='search-filter'>
@@ -248,7 +262,7 @@ const IssueList: React.FC = () => {
                 <tr>
                     <th className = 'title'>Title</th>
                     <th style={{width: '15%'}}>Status</th>
-                    <th className = 'dateStart' style={isTester?{width: '20%'}:{width: '27%'}}>Start date</th>
+                    <th className = 'dateStart' style={isTester===true?{width: '20%'}:{width: '27%'}}>Start date</th>
                     <th className = 'create'>
                         Due date
                         {isTester && (

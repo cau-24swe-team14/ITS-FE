@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { postLogin } from "../apis/apis";
+import { useAuth } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
 import styles from '../css/login.module.css';
 
@@ -7,6 +8,7 @@ const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { setLoggedInUser } = useAuth();
   const nav = useNavigate();
 
   const handleSubmit = async (e:any) => {
@@ -17,6 +19,7 @@ const LoginForm = () => {
 
       if (login_data === 200) {
         setError("로그인 성공");
+        setLoggedInUser(username);
         nav('/projects');
         // onLogin(username, password);
         // 로그인 성공 처리

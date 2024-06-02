@@ -14,27 +14,27 @@ const stat = ["NEW", "ASSIGNED", "FIXED", "RESOLVED", "CLOSED", "REOPENED"];
 export default function EditStatus({ status, accountRole, projectId, issueId, assignee }: IEditStatusProps) {    
     const [selectedStatus, setSelectedStatus] = useState(status);
     const [assign, setAssign] = useState(assignee);
-//     const [recommend, setRecommend] = useState<string[]>([]);
-
-//     useEffect(() => {
-//     const fetchAssignees = async () => {
-//         try {
-//             const response = await getAssinee(projectId); // API 호출 시 projectId 필요한지 확인 필요
-//             // API 응답 구조에 따라 username을 추출하는 방식을 조정해야 할 수 있습니다.
-//             const usernames = response.map(assignee => assignee.username);
-//             setAssignees(usernames);
-//         } catch (error) {
-//             console.error("Error fetching assignees:", error);
-//         }
-//     };
-
-//     fetchAssignees();
-// }, [projectId]); // projectId가 변경될 때마다 실행
+    const [assignees, setAssignee] = useState<string[]>([]);
 
     useEffect(() => {
         setSelectedStatus(status);
         setAssign(assignee);
     }, [status, assignee]);
+
+    useEffect(() => {
+        const fetchAssignees = async () => {
+            try {
+                const response = await getAssinee(projectId, issueId);
+                setAssignee(response.username);
+            } catch (error) {
+                console.error("Error fetching assignees:", error);
+            }
+        };
+
+        if (accountRole === 0 && status === "NEW") {
+            fetchAssignees();
+        }
+    }, [projectId, accountRole, status]); 
 
     const isOptionDisabled = (optionValue: string) => {
         switch (accountRole) {
@@ -56,7 +56,6 @@ export default function EditStatus({ status, accountRole, projectId, issueId, as
     const handleSaveStatus = async () => {
         try {
             const statusIndex = findIndexByStatus(selectedStatus);
-            console.log(statusIndex);
             if (statusIndex === -1) {
                 console.error("invalid status value"); 
                 return;
@@ -80,10 +79,14 @@ export default function EditStatus({ status, accountRole, projectId, issueId, as
         setAssign(e.target.value);
     };
 
+    const handleAssigneeClick = (selectedAssignee: string) => {
+        setAssign(selectedAssignee);
+    };
+
     return(
-        <div className="flex flex-col mx-[171px] mb-[130px] w-[1098px] h-[108px]">
+        <div className="flex flex-col mx-[171px] mb-[130px] w-100% h-[108px]">
             <div className="font-semibold text-[24px]">Edit status</div>
-            <div className="flex flex-row mt-[25px] w-[1098px] px-[45px] py-[10px] h-[54px] border border-[#747474] rounded-[5px]">
+            <div className="flex flex-row mt-[25px] w-[1098px] px-[45px] py-[10px] border border-[#747474] rounded-[5px]">
                 <label className="flex justify-center items-center mr-[254px]">
                     <span className="text-[18px] font-medium">status - </span>
                     <select 
@@ -98,14 +101,31 @@ export default function EditStatus({ status, accountRole, projectId, issueId, as
                     </select>
                 </label>
                 <label className="flex items-center justify-center">
-                    <span className="text-[18px] font-medium">assign - </span>
-                    <textarea className="w-[194px] h-[32px] px-[10px] ml-[10px] border border-black rounded-[5px] resize-none" value={assignee}
-                        onChange={handleAssigneeChange} disabled={assignee !== "" || accountRole !== 0}/>                
+                    <span className="text-[18px] font-medium">assignee - </span>
+                    <textarea 
+                        className="w-[194px] h-[32px] px-[10px] ml-[10px] border border-black rounded-[5px] resize-none flex items-center" 
+                        value={assign}
+                        onChange={handleAssigneeChange} 
+                        disabled={status !== "NEW" || accountRole !== 0}/>                
                 </label>
                 <div className="ml-auto flex items-center">
-                    <button className="px-[12px] py-[6px] w-[120px] bg-black text-white rounded-[5px] hover:bg-[#D9D9D9] hover:text-black" onClick={handleSaveStatus}>Save</button>
+                    <button 
+                        className="px-[12px] py-[6px] w-[120px] bg-black text-white rounded-[5px] hover:bg-[#D9D9D9] hover:text-black" 
+                        onClick={handleSaveStatus}>Save</button>
                 </div>
             </div>
+            {accountRole === 0 && status === "NEW" && (
+                <div className="mt-4 w-full flex justify-end">
+                    <div className="px-[10px] w-1/2">
+                    <span className="text-[15px] font-medium mx-[5px]">Assignee recommendations:</span>
+                    <span 
+                        className="mr-2 underline text-[15px]"
+                        onClick={() => handleAssigneeClick(assignee)}>
+                        {assignees}
+                    </span>
+                </div>
+                </div>
+            )}
         </div>
     );
 }
