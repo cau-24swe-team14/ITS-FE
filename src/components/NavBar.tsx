@@ -17,7 +17,7 @@ export default function NavBar() {
         destination === "login"
           ? "/users/login"
           : destination === "main"
-          ? "/"
+          ? "/projects"
           : `/${destination}`
       }`
     );
@@ -45,7 +45,7 @@ export default function NavBar() {
           onClick={onMove}
           className="cursor-pointer"
         >
-          <p className="font-semibold text-[48px]">ITS</p>
+          <p className="font-semibold text-[48px]">Issue Tracker</p>
         </div>
       </div>
       <div className="relative flex flex-row justify-between items-center bg-white px-4 sm:px-10 py-2">
