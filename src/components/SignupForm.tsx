@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postSignup } from '../apis/apis';
 import styles from '../css/login.module.css';
+import { useAuth } from './AuthContext';
 
 const SignupForm = () => {
+  const { setLoggedInUser } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -18,6 +20,7 @@ const SignupForm = () => {
       if (data === 201) {
         // 회원가입 성공 처리
         alert('Signup successful');
+        setLoggedInUser(username);
         nav('/projects');
       } else {
         // 회원가입 실패 처리

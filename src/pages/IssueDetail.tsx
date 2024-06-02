@@ -55,7 +55,7 @@ export default function IssueDetail() {
                         priority={issue.priority}
                         keyword={issue.keyword}
                     />
-                    <EditStatus assignee={issue.assginee} accountRole={issue.accountRole} status={issue.status} projectId={parseInt(projectId)} issueId={parseInt(issueId)}/>
+                    <EditStatus assignee={issue.assginee} accountRole={issue.accountRole} status={issue.status} projectId={parseInt(projectId)} issueId={parseInt(issueId)} onStatusUpdate={loadIssue}/>
                     <Comment 
                         projectId={parseInt(projectId)}
                         issueId={parseInt(issueId)}

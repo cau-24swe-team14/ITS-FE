@@ -1,17 +1,22 @@
 import { useState, useEffect } from "react"
 import { getIssueStatics } from "../apis/apis";
 import { INewProps, IClosedProps, ITopProps, IBestProps } from "./IStatics";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function IssueStatics() {
     const { projectId } = useParams<{projectId : any}>();
     const [selectedItem, setSelectedItem] = useState('');
-    const [setStaticsData] = useState<any>(null);
+    const [staticsdata, setStaticsData] = useState<any>(null);
     const [newData, setNewData] = useState<INewProps>({ daily: { data: [] }, monthly: { data: [] } });
     const [closedData, setClosedData] = useState<IClosedProps>({ daily: { data: [] }, monthly: { data: [] } });
     const [topData, setTopData] = useState<ITopProps>({ daily: { data: [] }, monthly: { data: [] } });
     const [bestData, setBestData] = useState<IBestProps>({ weekly: { data: { pl: { username: "", count: 0 }, dev: { username: "", count: 0 }, tester: { username: "", count: 0 } } } });
+    const nav = useNavigate();
 
+    const setHandlePage = ( projectId: number, issueId: number) => {
+        nav(`/projects/${projectId}/issues/${issueId}`);
+    };
+    
     useEffect(() => {
         async function fetchStaticsData() {
             try {
@@ -49,9 +54,7 @@ export default function IssueStatics() {
         }
     }, [selectedItem]);
 
-    const getContentForSelectedItem = () => {
-        console.log(newData.daily.data);
-        
+    const getContentForSelectedItem = () => {        
         switch (selectedItem) {
           case 'IDaily':
             return (
@@ -131,7 +134,7 @@ export default function IssueStatics() {
                     <p className="mx-[15px] my-[15px] font-semibold">Daily Data</p>
                     {topData && topData.daily.data.map((item:any, index:number) => (
                         <p className="mx-[20px] my-[10px] text-[18px]" key={index}>{`제목: ${item.title}, comment 개수: ${item.count}`}
-                        <a href={`/projects/${projectId}/issues/${item.issueId}`} className="mx-[20px] my-[10px] text-black hover:text-gray-500">View Issue</a>
+                        <button className="bg-white text-black hover:text-gray-500 text-[18px] mx-[20px] p-0 hover:border-white" onClick={() => setHandlePage(projectId, item.issueId)}>View Issue</button>
                         {index !== topData.daily.data.length - 1 && <hr className="my-[10px]"/>}
                         </p>
                     ))}
@@ -140,10 +143,10 @@ export default function IssueStatics() {
           case 'TMonthly':
             return (
                 <div>
-                    <p className="mx-[15px] my-[15px] font-semibold">Daily Data</p>
+                    <p className="mx-[15px] my-[15px] font-semibold">Monthly Data</p>
                     {topData && topData.monthly.data.map((item:any, index:number) => (
                         <p className="mx-[20px] my-[10px] text-[18px]" key={index}>{`제목: ${item.title}, comment 개수: ${item.count}`}
-                        <a href={`/projects/${projectId}/issues/${item.issueId}`} className="mx-[20px] my-[10px] text-black hover:text-gray-500">View Issue</a>
+                        <button className="bg-white text-black hover:text-gray-500 text-[18px] mx-[20px] p-0 hover:border-white" onClick={() => setHandlePage(projectId, item.issueId)}>View Issue</button>
                         {index !== topData.monthly.data.length - 1 && <hr className="my-[10px]"/>}
                         </p>
                     ))}

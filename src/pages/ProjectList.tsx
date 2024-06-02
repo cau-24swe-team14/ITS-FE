@@ -92,7 +92,7 @@ const ProjectList: React.FC = () => {
                     </select>
                 </div>
                 <table style={{ height: `${50 * (listNum+1)}px` }}>
-                <thead>
+                <thead className="cursor-default">
                 <tr>
                     <th className = 'title'>Title</th>
                     <th className = 'create'>
@@ -103,7 +103,7 @@ const ProjectList: React.FC = () => {
                     </th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody className="cursor-pointer">
                 {projectView.map((project:any) => (
                     <tr key={project.id}>
                     <td><text onClick={()=>nav(`/projects/`+project.id)}>{project.title}</text></td>

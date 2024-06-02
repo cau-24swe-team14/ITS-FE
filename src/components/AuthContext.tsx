@@ -1,15 +1,14 @@
-import { useEffect } from 'react';
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
 interface AuthContextType {
-  loggedInUser: string;
-  setLoggedInUser: React.Dispatch<React.SetStateAction<string>>;
+  loggedInUser: string | null;
+  setLoggedInUser: (user: string | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [loggedInUser, setLoggedInUser] = useState("");
+  const [loggedInUser, setLoggedInUserState] = useState<string | null>(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("loggedInUser");
@@ -17,6 +16,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setLoggedInUser(storedUser);
     }
   }, []);
+
+  const setLoggedInUser = (user: string | null) => {
+    if (user) {
+      localStorage.setItem("loggedInUser", user);
+    } else {
+      localStorage.removeItem("loggedInUser");
+    }
+    setLoggedInUserState(user);
+  };
 
   return (
     <AuthContext.Provider value={{ loggedInUser, setLoggedInUser }}>

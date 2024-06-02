@@ -15,6 +15,7 @@ interface Issue {
 }
 
 const IssueStatue = ['NEW', 'ASSIGNED', 'FIXED', 'RESOLVED', 'CLOSED', 'REOPENED']
+const ProjectStatus = ['Not Started', 'In Progress', 'Done']
 const searchFilters = ['title', 'description', 'keyword', 'reporter', 'manager', 'assignee', 'fixer', 'priority', 'status']
 
 const IssueList: React.FC = () => {
@@ -199,7 +200,7 @@ const IssueList: React.FC = () => {
                                 top: '200px', 
                                 zIndex: 10
                               }}>
-                                <p><strong>Project Status:{projectStatus}</strong></p>
+                                <p><strong>Project Status:{ProjectStatus[parseInt(projectStatus)]}</strong></p>
                                 <p><strong>Project Date:{projectDate}</strong></p>
                                 <p><strong>Member:</strong></p>
                                 {projectPL!==""&&<p>PL - {projectPL}</p>}
@@ -261,7 +262,7 @@ const IssueList: React.FC = () => {
                 ) : (
                     <>
                     <table style={{ height: `${50 * (listNum+1)}px` }}>
-                <thead>
+                <thead className="cursor-default">
                 <tr>
                     <th className = 'title'>Title</th>
                     <th style={{width: '15%'}}>Status</th>
@@ -274,7 +275,7 @@ const IssueList: React.FC = () => {
                     </th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody className="cursor-pointer">
                 {issueView.map(issue => (
                     <tr key={issue.id} onClick={()=>nav(`/projects/${projectId}/issues/`+issue.id)}>
                     <td>{issue.title}</td>

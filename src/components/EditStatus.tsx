@@ -7,11 +7,12 @@ export interface IEditStatusProps {
     projectId: number;
     issueId: number;
     assignee: string;
+    onStatusUpdate: () => void;
 }
 
 const stat = ["NEW", "ASSIGNED", "FIXED", "RESOLVED", "CLOSED", "REOPENED"];
 
-export default function EditStatus({ status, accountRole, projectId, issueId, assignee }: IEditStatusProps) {    
+export default function EditStatus({ status, accountRole, projectId, issueId, assignee, onStatusUpdate }: IEditStatusProps) {    
     const [selectedStatus, setSelectedStatus] = useState(status);
     const [assign, setAssign] = useState(assignee);
     const [assignees, setAssignee] = useState<string[]>([]);
@@ -65,7 +66,8 @@ export default function EditStatus({ status, accountRole, projectId, issueId, as
             if (assign) assigneeData.assignee = assign;
             await patchIssue(projectId, issueId, { ...statusData, ...assigneeData });
             console.log("Status updated successfully!");
-            window.location.reload();
+            onStatusUpdate();
+            // window.location.reload();
         } catch (error) {
             console.error("Error updating status:", error);
         }
