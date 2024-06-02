@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react"
 import { getIssueStatics } from "../apis/apis";
 import { INewProps, IClosedProps, ITopProps, IBestProps } from "./IStatics";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function IssueStatics() {
     const { projectId } = useParams<{projectId : any}>();
     const [selectedItem, setSelectedItem] = useState('');
-    const [staticsData, setStaticsData] = useState<any>(null);
+    const [setStaticsData] = useState<any>(null);
     const [newData, setNewData] = useState<INewProps>({ daily: { data: [] }, monthly: { data: [] } });
     const [closedData, setClosedData] = useState<IClosedProps>({ daily: { data: [] }, monthly: { data: [] } });
     const [topData, setTopData] = useState<ITopProps>({ daily: { data: [] }, monthly: { data: [] } });
     const [bestData, setBestData] = useState<IBestProps>({ weekly: { data: { pl: { username: "", count: 0 }, dev: { username: "", count: 0 }, tester: { username: "", count: 0 } } } });
-    const nav = useNavigate();
 
     useEffect(() => {
         async function fetchStaticsData() {

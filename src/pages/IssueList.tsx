@@ -15,8 +15,6 @@ interface Issue {
 }
 
 const IssueStatue = ['NEW', 'ASSIGNED', 'FIXED', 'RESOLVED', 'CLOSED', 'REOPENED']
-const ProjectStatus = ['Not Started', 'In Progress', 'Done']
-const ProjectAccountRole = ['PL', 'DEV', 'TESTER']
 const searchFilters = ['title', 'description', 'keyword', 'reporter', 'manager', 'assignee', 'fixer', 'priority', 'status']
 
 const IssueList: React.FC = () => {
